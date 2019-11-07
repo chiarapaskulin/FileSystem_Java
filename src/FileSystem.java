@@ -141,6 +141,7 @@ public class FileSystem {
 		fat[root_block] = 0x7fff;
 		for (int i = root_block + 1; i < blocks; i++)
 			fat[i] = 0;
+
 		/* write it to disk */
 		writeFat("filesystem.dat", fat);
 
