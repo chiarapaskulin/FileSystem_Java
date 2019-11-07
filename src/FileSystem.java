@@ -10,13 +10,20 @@ import java.io.DataInputStream;
 import java.io.FilterInputStream;
 
 public class FileSystem {
-	static int block_size = 1024; //1024 bytes
-	static int blocks = 2048; //2048 bytes
-	static int fat_size = blocks * 2; //4096 bytes
-	static int fat_blocks = fat_size / block_size; //4 blocos
-	static int root_block = fat_blocks; //4 blocos
-	static int dir_entry_size = 32; //32 bytes
-	static int dir_entries = block_size / dir_entry_size; //32 entradas
+	static int block_size = 1024; // 1k
+	static int blocks = 2048; // 2048 blocos de 1k
+	static int fat_size = blocks * 2; // 4k
+	static int fat_blocks = fat_size / block_size; // 4
+	static int root_block = fat_blocks; // 4
+	static int dir_entry_size = 32;
+	static int dir_entries = block_size / dir_entry_size; // 32
+
+	/*
+	0x0000 -> cluster livre
+	0x0001 - 0x7ffd -> arquivo (ponteiro p/ proximo bloco)
+	0x7ffe -> FAT
+	0x7fff -> Fim de arquivo
+	*/
 
 	/* FAT data structure */
 	final static short[] fat = new short[blocks];
@@ -141,7 +148,6 @@ public class FileSystem {
 		fat[root_block] = 0x7fff;
 		for (int i = root_block + 1; i < blocks; i++)
 			fat[i] = 0;
-
 		/* write it to disk */
 		writeFat("filesystem.dat", fat);
 
@@ -193,3 +199,4 @@ public class FileSystem {
 		}
 	}
 }
+
