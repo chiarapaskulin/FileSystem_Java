@@ -11,7 +11,7 @@ import java.io.FilterInputStream;
 
 public class FileSystem {
 	static int block_size = 1024; //1024 bytes
-	static int blocks = 2048; //2048 bytes
+	static int blocks = 2048; //2048 blocos de 2024 bytes
 	static int fat_size = blocks * 2; //4096 bytes
 	static int fat_blocks = fat_size / block_size; //4 blocos
 	static int root_block = fat_blocks; //4 blocos
