@@ -147,6 +147,50 @@ public class FileSystem {
 		}
 		writeBlock("filesystem.dat", block, data_block);
 	}
+	//init - inicializar o sistema de arquivos com as estruturas de dados, semelhante a formatar o sistema de arquivos virtual
+	public static void init(){
+
+	}
+
+	//ls [/caminho/diretorio] - listar diretorio
+	public static void ls(String s){
+
+	}
+
+	//mkdir [/caminho/diretorio] - criar diretorio
+	public static void mkdir(String s){
+
+	}
+
+	//create [/caminho/arquivo] - criar arquivo
+	public static void createArchive(String s){
+
+	}
+
+	//unlink [/caminho/arquivo] - excluir arquivo ou diretorio (o diretorio precisa estar vazio)
+	public static void unlink(String s){
+
+	}
+
+	//retorna se o Diretorio esta vazio
+	public static boolean isDirEmpty(){
+		return true;
+	}
+
+	//write "string" [/caminho/arquivo] - escrever dados em um arquivo (sobrescrever	dados)
+	public static void write(String s){
+
+	}
+
+	//append "string" [/caminho/arquivo] - anexar dados em um arquivo
+	public static void append(String s){
+
+	}
+
+	//read [/caminho/arquivo] - ler o conteudo de um arquivo
+	public static void read(String s){
+
+	}
 
 	public static void main(String args[]) {
 		/* initialize the FAT */
