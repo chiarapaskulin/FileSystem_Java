@@ -25,9 +25,9 @@ public class FileSystem {
 	*/
 
 	/* FAT data structure */
-	final static short[] fat = new short[blocks];
+	final static short[] fat = new short[blocks]; //2048 representacoes de bloco de 2 bytes cada = 4096 bytes = 4 blocos
 	/* data block */
-	final static byte[] data_block = new byte[block_size];
+	final static byte[] data_block = new byte[block_size]; //1 bloco local de tamanho 1024 bytes
 
 	/* reads a data block from disk */
 	public static byte[] readBlock(String file, int block) {
@@ -204,7 +204,7 @@ public class FileSystem {
 		}
 	}
 
-	//unlink [/caminho/arquivo] - excluir arquivo ou diretorio (o diretorio precisa estar vazio)
+	//unlink [/caminho/arquivo] - excluir arquivo ou diretorio (o diretorio precisa estar vazio)
 	public static void unlink(String s){
 		String[] arrOfStr = s.split("/");
 		for (String a : arrOfStr) {
@@ -217,7 +217,7 @@ public class FileSystem {
 		return true;
 	}
 
-	//write "string" [/caminho/arquivo] - escrever dados em um arquivo (sobrescrever	dados)
+	//write "string" [/caminho/arquivo] - escrever dados em um arquivo (sobrescrever dados)
 	public static void write(String s){
 		String[] arrOfStr = s.split("/");
 		for (String a : arrOfStr) {
@@ -233,7 +233,7 @@ public class FileSystem {
 		}
 	}
 
-	//read [/caminho/arquivo] - ler o conteudo de um arquivo
+	//read [/caminho/arquivo] - ler o conteudo de um arquivo
 	public static void read(String s){
 		String[] arrOfStr = s.split("/");
 		for (String a : arrOfStr) {
