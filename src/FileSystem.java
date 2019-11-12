@@ -147,6 +147,7 @@ public class FileSystem {
 		}
 		writeBlock("filesystem.dat", block, data_block);
 	}
+
 	//init - inicializar o sistema de arquivos com as estruturas de dados, semelhante a formatar o sistema de arquivos virtual
 	public static void init(){
 		/* initialize the FAT */
@@ -176,48 +177,68 @@ public class FileSystem {
 		}
 	}
 
-	//ls [/caminho/diretorio] - listar diretorio
+	//ls [/caminho/diretorio] - listar diretorio
 	public static void ls(String s){
-
+		String[] arrOfStr = s.split("/");
+		for (String a : arrOfStr) {
+			System.out.println(a);
+		}
 	}
 
 	//mkdir [/caminho/diretorio] - criar diretorio
 	public static void mkdir(String s){
-
+		String[] arrOfStr = s.split("/");
+		for (String a : arrOfStr) {
+			System.out.println(a);
+		}
 	}
 
 	//create [/caminho/arquivo] - criar arquivo
 	public static void createArchive(String s){
-
+		String[] arrOfStr = s.split("/");
+		for (String a : arrOfStr) {
+			System.out.println(a);
+		}
 	}
 
 	//unlink [/caminho/arquivo] - excluir arquivo ou diretorio (o diretorio precisa estar vazio)
 	public static void unlink(String s){
-
+		String[] arrOfStr = s.split("/");
+		for (String a : arrOfStr) {
+			System.out.println(a);
+		}
 	}
 
 	//retorna se o Diretorio esta vazio
-	public static boolean isDirEmpty(){
+	public static boolean isDirEmpty(String s){
 		return true;
 	}
 
 	//write "string" [/caminho/arquivo] - escrever dados em um arquivo (sobrescrever	dados)
 	public static void write(String s){
-
+		String[] arrOfStr = s.split("/");
+		for (String a : arrOfStr) {
+			System.out.println(a);
+		}
 	}
 
 	//append "string" [/caminho/arquivo] - anexar dados em um arquivo
 	public static void append(String s){
-
+		String[] arrOfStr = s.split("/");
+		for (String a : arrOfStr) {
+			System.out.println(a);
+		}
 	}
 
 	//read [/caminho/arquivo] - ler o conteudo de um arquivo
 	public static void read(String s){
-
+		String[] arrOfStr = s.split("/");
+		for (String a : arrOfStr) {
+			System.out.println(a);
+		}
 	}
 
 	public static void main(String args[]) {
-
 		/* fill three root directory entries and list them */
 		DirEntry dir_entry = new DirEntry();
 		String name = "file1";
