@@ -150,29 +150,31 @@ public class FileSystem {
 
 	//init - inicializar o sistema de arquivos com as estruturas de dados, semelhante a formatar o sistema de arquivos virtual
 	public static void init(){
-		/* initialize the FAT */
+		/* inicializa a FAT com as 4 (indices 0,1,2,3) primeiras entradas 0x7ffe para a própria FAT */
 		for (int i = 0; i < fat_blocks; i++) {
 			fat[i] = 0x7ffe;
 		}
 
+		/* inicializa a 5ª (indice 4) entrada da FAT com 0x7fff para indicar que é o ROOT */
 		fat[root_block] = 0x7fff;
 
+		/* inicializa todos outros blocos da FAT com 0 - do 6º (indice 4) ao 2048º (indice 2047) */
 		for (int i = root_block + 1; i < blocks; i++) {
 			fat[i] = 0;
 		}
 
-		/* write it to disk */
+		/* escreve a FAT no disco - nos 4 primeiros blocos (indices 0,1,2,3) */
 		writeFat("filesystem.dat", fat);
 
-		/* initialize an empty data block */
+		/* escreve um bloco LOCAL zerado */
 		for (int i = 0; i < block_size/*1024 bytes*/; i++) {
 			data_block[i] = 0;
 		}
 
-		/* write an empty ROOT directory block */
+		/* coloca esse bloco VAZIO na localização do ROOT - 5º bloco (indice 4) - no disco, ou seja, escreve o root vazio no disco*/
 		writeBlock("filesystem.dat", root_block/*4*/, data_block);
 
-		/* write the remaining data blocks to disk */
+		/* escreve todos outros blocos vazios - do 6º (indice 5) ao 2048º (indice 2047) */
 		for (int i = root_block + 1; i < blocks; i++) {
 			writeBlock("filesystem.dat", i, data_block);
 		}
