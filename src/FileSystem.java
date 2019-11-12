@@ -156,6 +156,7 @@ public class FileSystem {
 		}
 
 		fat[root_block] = 0x7fff;
+
 		for (int i = root_block + 1; i < blocks; i++) {
 			fat[i] = 0;
 		}
@@ -164,12 +165,12 @@ public class FileSystem {
 		writeFat("filesystem.dat", fat);
 
 		/* initialize an empty data block */
-		for (int i = 0; i < block_size; i++) {
+		for (int i = 0; i < block_size/*1024 bytes*/; i++) {
 			data_block[i] = 0;
 		}
 
 		/* write an empty ROOT directory block */
-		writeBlock("filesystem.dat", root_block, data_block);
+		writeBlock("filesystem.dat", root_block/*4*/, data_block);
 
 		/* write the remaining data blocks to disk */
 		for (int i = root_block + 1; i < blocks; i++) {
