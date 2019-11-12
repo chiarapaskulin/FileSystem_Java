@@ -101,9 +101,9 @@ public class FileSystem {
 			for (int i = 0; i < 25; i++){
 				dir_entry.filename[i] = in.readByte();
 			}
-				dir_entry.attributes = in.readByte();
-				dir_entry.first_block = in.readShort();
-				dir_entry.size = in.readInt();
+			dir_entry.attributes = in.readByte();
+			dir_entry.first_block = in.readShort();
+			dir_entry.size = in.readInt();
 
 		} catch (IOException e) {
 			e.printStackTrace();
