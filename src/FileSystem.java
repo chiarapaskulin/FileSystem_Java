@@ -157,7 +157,7 @@ public class FileSystem {
 
 	}
 
-	//mkdir [/caminho/diretorio] - criar diretorio
+	//mkdir [/caminho/diretorio] - criar diretorio
 	public static void mkdir(String s){
 
 	}
