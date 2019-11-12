@@ -97,12 +97,14 @@ public class FileSystem {
 		try {
 			in.skipBytes(entry * dir_entry_size);
 
-			for (int i = 0; i < 25; i++) {
+			//nome do arquivo tem 25 bytes
+			for (int i = 0; i < 25; i++){
 				dir_entry.filename[i] = in.readByte();
+			}
 				dir_entry.attributes = in.readByte();
 				dir_entry.first_block = in.readShort();
 				dir_entry.size = in.readInt();
-			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
