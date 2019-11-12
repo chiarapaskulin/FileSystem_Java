@@ -149,7 +149,31 @@ public class FileSystem {
 	}
 	//init - inicializar o sistema de arquivos com as estruturas de dados, semelhante a formatar o sistema de arquivos virtual
 	public static void init(){
+		/* initialize the FAT */
+		for (int i = 0; i < fat_blocks; i++) {
+			fat[i] = 0x7ffe;
+		}
 
+		fat[root_block] = 0x7fff;
+		for (int i = root_block + 1; i < blocks; i++) {
+			fat[i] = 0;
+		}
+
+		/* write it to disk */
+		writeFat("filesystem.dat", fat);
+
+		/* initialize an empty data block */
+		for (int i = 0; i < block_size; i++) {
+			data_block[i] = 0;
+		}
+
+		/* write an empty ROOT directory block */
+		writeBlock("filesystem.dat", root_block, data_block);
+
+		/* write the remaining data blocks to disk */
+		for (int i = root_block + 1; i < blocks; i++) {
+			writeBlock("filesystem.dat", i, data_block);
+		}
 	}
 
 	//ls [/caminho/diretorio] - listar diretorio
@@ -193,30 +217,6 @@ public class FileSystem {
 	}
 
 	public static void main(String args[]) {
-		/* initialize the FAT */
-		for (int i = 0; i < fat_blocks; i++) {
-			fat[i] = 0x7ffe;
-		}
-
-		fat[root_block] = 0x7fff;
-		for (int i = root_block + 1; i < blocks; i++) {
-			fat[i] = 0;
-		}
-		/* write it to disk */
-		writeFat("filesystem.dat", fat);
-
-		/* initialize an empty data block */
-		for (int i = 0; i < block_size; i++) {
-			data_block[i] = 0;
-		}
-
-		/* write an empty ROOT directory block */
-		writeBlock("filesystem.dat", root_block, data_block);
-
-		/* write the remaining data blocks to disk */
-		for (int i = root_block + 1; i < blocks; i++) {
-			writeBlock("filesystem.dat", i, data_block);
-		}
 
 		/* fill three root directory entries and list them */
 		DirEntry dir_entry = new DirEntry();
