@@ -240,6 +240,9 @@ public class FileSystem {
 	}
 
 	public static void main(String args[]) {
+		readFat("filesystem.dat");
+
+
 		/* fill three root directory entries and list them */
 		DirEntry dir_entry = new DirEntry();
 		String name = "file1";
@@ -273,11 +276,11 @@ public class FileSystem {
 		writeDirEntry(root_block, 2, dir_entry);
 
 		/* list entries from the root directory */
-		for (int i = 0; i < dir_entries; i++) {
-			dir_entry = readDirEntry(root_block, i);
-			System.out.println("Entry " + i + ", file: " + new String(dir_entry.filename) + " attr: " +
-			dir_entry.attributes + " first: " + dir_entry.first_block + " size: " + dir_entry.size);
-		}
+		//for (int i = 0; i < dir_entries; i++) {
+		//	dir_entry = readDirEntry(root_block, i);
+		//	System.out.println("Entry " + i + ", file: " + new String(dir_entry.filename) + " attr: " +
+		//	dir_entry.attributes + " first: " + dir_entry.first_block + " size: " + dir_entry.size);
+		//}
 	}
 }
 
