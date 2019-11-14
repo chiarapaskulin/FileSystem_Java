@@ -196,6 +196,7 @@ public class FileSystem {
 		for (String a : arrOfStr) {
 			System.out.println(a);
 		}
+
 	}
 
 	//create [/caminho/arquivo] - criar arquivo
@@ -246,8 +247,6 @@ public class FileSystem {
 	public static void main(String args[]) {
 		readFat("filesystem.dat");
 
-
-		/* fill three root directory entries and list them */
 		DirEntry dir_entry = new DirEntry();
 		String name = "file1";
 		byte[] namebytes = name.getBytes();
@@ -259,6 +258,8 @@ public class FileSystem {
 		dir_entry.size = 222;
 		writeDirEntry(root_block, 0, dir_entry);
 
+
+		/* fill three root directory entries and list them */
 		name = "file2";
 		namebytes = name.getBytes();
 		for (int i = 0; i < namebytes.length; i++) {
