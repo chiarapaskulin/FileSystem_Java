@@ -185,28 +185,20 @@ public class FileSystem {
 	//ls [/caminho/diretorio] - listar diretorio
 	public static void ls(String path){
 		String[] arrOfStr = path.split("/");
-		String[] newPath = arrOfStr;
-
-		if(arrOfStr.length>1) {
-			newPath = new String[arrOfStr.length - 1];
-
-			int posicao = 0;
-			for (int i = 1; i < arrOfStr.length; i++) {
-				newPath[posicao] = arrOfStr[i];
-			}
-		}
-
-		followUntilFindDir(newPath,(short) 4);
+		//passa o path completo
+		//a primeira posicao do array é o diretorio ATUAL
+		//o blocoAtual é o número do bloco do diretorio ATUAL
+		followUntilFindDir(arrOfStr,(short) 4);
 	}
 
-	public static void followUntilFindDir(String[] path, short blocoAtual){
-		//se é o ultimo diretorio do path, acessa e lista o mesmo
+	private static void followUntilFindDir(String[] path, short blocoAtual){
+		//se é o ultimo diretorio do path, acessa seu diretorio pai, acessa ele e lista ele
 		if(path.length==1) accessAndListDir(path[0], blocoAtual);
-		else {
+		else{
 			boolean found = false;
 
-			//nome do diretorio que eu estou procurando
-			byte[] file = path[0].getBytes();
+			//nome do diretorio que eu estou procurando é pego no path[1], porque path[0] é o atual
+			byte[] file = path[1].getBytes();
 
 			//confere cada entrada de diretório do blocoAtual
 			for (int i = 0; i < 32 && found == false; i++) {
@@ -214,7 +206,7 @@ public class FileSystem {
 
 				//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
 				if (entry.filename == file) {
-					//se achou a entrada de diretorio, entra nela e passa path sem ela
+					//se achou a entrada de diretorio, entra nela e passa path sem o diretorio atual
 					found = true;
 
 					String[] newPath = new String[path.length - 1];
@@ -223,43 +215,31 @@ public class FileSystem {
 						newPath[posicao] = path[i];
 					}
 
+					//chama o metodo recursivamente com path[0], que agora é o diretorio que vamos entrar
+					//e com entry.first_bloc, que é o numero do bloco desse diretorio
 					followUntilCreateDir(newPath, entry.first_block);
 				}
 			}
 
-			if (found == false) System.out.println("Não há nenhum diretório chamado /" + path[0]);
+			//printa que não achou o diretorio path[1], que é o que está sendo procurado no atual path[0]
+			if (found == false) System.out.println("Não há nenhum diretório chamado /" + path[1]);
 		}
 	}
 
-	public static void accessAndListDir(String path, short blocoAtual){
-		boolean found = false;
-
-		//nome do diretorio que eu estou procurando
+	private static void accessAndListDir(String path, short blocoAtual){
+		//nome do diretorio atual de blocoAtual
 		byte[] file = path.getBytes();
 
-		//confere cada entrada de diretório do blocoAtual
-		for(int i=0; i<32 && found==false; i++){
-			DirEntry entry = readDirEntry(blocoAtual, i);
+		DirEntry dir_entry;
 
-			//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
-			if(entry.filename == file){
-				//se achou a entrada de diretorio, entra em cada entrada de diretorio desse diretorio(bloco)
-				found = true;
-
-				DirEntry dir_entry;
-				for (int j = 0; j < dir_entries; j++) {
-					dir_entry = readDirEntry(i,j);
-					//se a entrada de diretório nao esta vazia, printa seu nome
-					if (dir_entry.attributes != 0) {
-						System.out.println(dir_entry.filename.toString());
-					}
-				}
+		//printa cada entrada de diretório do blocoAtual que não seja vazia
+		for(int i=0; i<32; i++){
+			dir_entry = readDirEntry(blocoAtual,i);
+			//se a entrada de diretório nao esta vazia, printa seu nome
+			if (dir_entry.attributes != 0) {
+				System.out.println(dir_entry.filename.toString());
 			}
 		}
-
-		//se o diretorio não existe, cria ele
-		if(found == false) System.out.println("O diretório chamado " + path + " não existe");
-
 	}
 
 	//mkdir [/caminho/diretorio] - criar diretorio
@@ -268,25 +248,28 @@ public class FileSystem {
 
 		String[] newPath = new String[arrOfStr.length-1];
 
+		//passa o path a partir do diretorio seguinte
 		int posicao = 0;
 		for(int i=1; i<arrOfStr.length; i++){
 			newPath[posicao] = arrOfStr[i];
 		}
 
+		//a primeira posicao do array é o diretorio SEGUINTE, o que tem que ser buscado no blocoAtual
+		//o blocoAtual é o número do bloco do diretorio ATUAL
 		followUntilCreateDir(newPath,(short) 4);
 	}
 
 	//vai acessando os subdiretorios até o penultimo e chama accessAndCreate para criar o ultimo
 	private static void followUntilCreateDir(String[] path, short blocoAtual){
-		//se é o ultimo diretorio do path, acessa e cria o mesmo
+		//se é o ultimo diretorio do path, o que tem que ser criado, acessa o blocoAtual (diretorio do que tem que ser criado) e cria o mesmo
 		if(path.length==1) accessAndCreateDir(path[0], blocoAtual);
 		else {
 			boolean found = false;
 
-			//nome do diretorio que eu estou procurando
+			//nome do diretorio que eu estou procurando no blocoAtual
 			byte[] file = path[0].getBytes();
 
-			//confere cada entrada de diretório do blocoAtual
+			//confere cada entrada de diretório do blocoAtual para ver se acha nele o diretorio que eu estou procurando
 			for (int i = 0; i < 32 && found == false; i++) {
 				DirEntry entry = readDirEntry(blocoAtual, i);
 

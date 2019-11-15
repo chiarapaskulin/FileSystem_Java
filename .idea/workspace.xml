@@ -25,8 +25,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="129">
-              <caret line="203" column="51" selection-start-line="203" selection-start-column="51" selection-end-line="203" selection-end-column="51" />
+            <state relative-caret-position="240">
+              <caret line="233" lean-forward="true" selection-start-line="233" selection-end-line="233" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#readBlock#0;class#FileSystem#0" />
@@ -36,12 +36,14 @@
                 <element signature="method#readDirEntry#0;class#FileSystem#0" />
                 <element signature="method#writeDirEntry#0;class#FileSystem#0" />
                 <element signature="method#init#0;class#FileSystem#0" />
-                <element signature="method#mkdir#0;class#FileSystem#0" />
+                <element signature="method#ls#0;class#FileSystem#0" />
+                <element signature="method#followUntilFindDir#0;class#FileSystem#0" />
+                <element signature="method#accessAndCreateDir#0;class#FileSystem#0" />
                 <element signature="method#first_free_FAT_entry#0;class#FileSystem#0" />
                 <element signature="method#createArchive#0;class#FileSystem#0" />
                 <element signature="method#unlink#0;class#FileSystem#0" />
-                <element signature="e#13101#13102#0" expanded="true" />
-                <element signature="e#13119#13120#0" expanded="true" />
+                <element signature="e#13138#13139#0" expanded="true" />
+                <element signature="e#13156#13157#0" expanded="true" />
                 <element signature="method#write#0;class#FileSystem#0" />
                 <element signature="method#append#0;class#FileSystem#0" />
                 <element signature="method#read#0;class#FileSystem#0" />
@@ -106,7 +108,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1573855304208" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1573860129032" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Algs Avancados/7-algoritmos-gulosos-problemas-do-troco-chiara2.git" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -157,24 +159,24 @@
       <updated>1573159834452</updated>
       <workItem from="1573159835870" duration="1672000" />
       <workItem from="1573686482316" duration="99000" />
-      <workItem from="1573764720388" duration="10772000" />
+      <workItem from="1573764720388" duration="14674000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17738000" />
+    <option name="totallyTimeSpent" value="21640000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26639676" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Image Layers" order="3" />
-      <window_info id="Designer" order="4" />
-      <window_info id="UI Designer" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4991119" weight="0.26639676" />
+      <window_info id="Capture Tool" order="1" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info active="true" id="Structure" order="6" sideWeight="0.5008881" visible="true" weight="0.26639676" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3285968" />
@@ -246,18 +248,6 @@
       </map>
     </option>
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/FileSystem.java</url>
-          <line>186</line>
-          <properties />
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/filesystem.dat">
       <provider selected="true" editor-type-id="text-editor" />
@@ -271,8 +261,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="203" column="51" selection-start-line="203" selection-start-column="51" selection-end-line="203" selection-end-column="51" />
+        <state relative-caret-position="240">
+          <caret line="233" lean-forward="true" selection-start-line="233" selection-end-line="233" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#readBlock#0;class#FileSystem#0" />
@@ -282,12 +272,14 @@
             <element signature="method#readDirEntry#0;class#FileSystem#0" />
             <element signature="method#writeDirEntry#0;class#FileSystem#0" />
             <element signature="method#init#0;class#FileSystem#0" />
-            <element signature="method#mkdir#0;class#FileSystem#0" />
+            <element signature="method#ls#0;class#FileSystem#0" />
+            <element signature="method#followUntilFindDir#0;class#FileSystem#0" />
+            <element signature="method#accessAndCreateDir#0;class#FileSystem#0" />
             <element signature="method#first_free_FAT_entry#0;class#FileSystem#0" />
             <element signature="method#createArchive#0;class#FileSystem#0" />
             <element signature="method#unlink#0;class#FileSystem#0" />
-            <element signature="e#13101#13102#0" expanded="true" />
-            <element signature="e#13119#13120#0" expanded="true" />
+            <element signature="e#13138#13139#0" expanded="true" />
+            <element signature="e#13156#13157#0" expanded="true" />
             <element signature="method#write#0;class#FileSystem#0" />
             <element signature="method#append#0;class#FileSystem#0" />
             <element signature="method#read#0;class#FileSystem#0" />
