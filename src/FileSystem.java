@@ -237,7 +237,11 @@ public class FileSystem {
 			dir_entry = readDirEntry(blocoAtual,i);
 			//se a entrada de diretório nao esta vazia, printa seu nome
 			if (dir_entry.attributes != 0) {
-				System.out.println(dir_entry.filename.toString());
+				String s = "";
+				try {
+					s = new String(dir_entry.filename, "UTF-8");
+				}catch (Exception e){};
+				System.out.println(s);
 			}
 		}
 	}
@@ -433,8 +437,6 @@ public class FileSystem {
 		}
 	}
 
-
-
 	public static void main(String args[]) {
 		readFat("filesystem.dat");
 
@@ -448,7 +450,6 @@ public class FileSystem {
 		dir_entry.first_block = 1111;
 		dir_entry.size = 222;
 		writeDirEntry(root_block, 0, dir_entry);
-
 
 		/* fill three root directory entries and list them */
 		name = "file2";
@@ -471,6 +472,13 @@ public class FileSystem {
 		dir_entry.size = 444;
 		writeDirEntry(root_block, 2, dir_entry);
 
+		System.out.println("LS EM ROOT: ");
+		ls("root");
+
+		System.out.println("\nCRIANDO UM SUBDIRETORIO EM ROOT");
+		mkdir("root/oi");
+
+		System.out.println("\nLS EM ROOT: ");
 		ls("root");
 	}
 }
