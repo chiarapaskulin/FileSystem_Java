@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83e7c231-3aed-4d48-94a8-afcfcd116ef5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/FileSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FileSystem.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,8 +16,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DirEntry.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
+            <state relative-caret-position="51">
+              <caret line="3" column="8" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -24,15 +25,26 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="213" lean-forward="true" selection-start-line="213" selection-end-line="213" />
+            <state relative-caret-position="129">
+              <caret line="203" column="51" selection-start-line="203" selection-start-column="51" selection-end-line="203" selection-end-column="51" />
               <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#readBlock#0;class#FileSystem#0" />
+                <element signature="method#writeBlock#0;class#FileSystem#0" />
+                <element signature="method#readFat#0;class#FileSystem#0" />
+                <element signature="method#writeFat#0;class#FileSystem#0" />
+                <element signature="method#readDirEntry#0;class#FileSystem#0" />
+                <element signature="method#writeDirEntry#0;class#FileSystem#0" />
+                <element signature="method#init#0;class#FileSystem#0" />
                 <element signature="method#mkdir#0;class#FileSystem#0" />
-                <element signature="method#follow#0;class#FileSystem#0" />
-                <element signature="method#access#0;class#FileSystem#0" />
                 <element signature="method#first_free_FAT_entry#0;class#FileSystem#0" />
-                <element signature="e#10894#10895#0" expanded="true" />
-                <element signature="e#10912#10913#0" expanded="true" />
+                <element signature="method#createArchive#0;class#FileSystem#0" />
+                <element signature="method#unlink#0;class#FileSystem#0" />
+                <element signature="e#13101#13102#0" expanded="true" />
+                <element signature="e#13119#13120#0" expanded="true" />
+                <element signature="method#write#0;class#FileSystem#0" />
+                <element signature="method#append#0;class#FileSystem#0" />
+                <element signature="method#read#0;class#FileSystem#0" />
               </folding>
             </state>
           </provider>
@@ -44,6 +56,9 @@
     <findStrings>
       <find>empty</find>
       <find>ls</find>
+      <find>String s</find>
+      <find>s.</find>
+      <find>s.split</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -91,7 +106,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1573851784260" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1573855304208" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Algs Avancados/7-algoritmos-gulosos-problemas-do-troco-chiara2.git" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -142,12 +157,12 @@
       <updated>1573159834452</updated>
       <workItem from="1573159835870" duration="1672000" />
       <workItem from="1573686482316" duration="99000" />
-      <workItem from="1573764720388" duration="8493000" />
+      <workItem from="1573764720388" duration="10772000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15459000" />
+    <option name="totallyTimeSpent" value="17738000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
@@ -163,7 +178,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3285968" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39964476" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -231,28 +246,51 @@
       </map>
     </option>
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/FileSystem.java</url>
+          <line>186</line>
+          <properties />
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/filesystem.dat">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/DirEntry.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
+        <state relative-caret-position="51">
+          <caret line="3" column="8" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="213" lean-forward="true" selection-start-line="213" selection-end-line="213" />
+        <state relative-caret-position="129">
+          <caret line="203" column="51" selection-start-line="203" selection-start-column="51" selection-end-line="203" selection-end-column="51" />
           <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#readBlock#0;class#FileSystem#0" />
+            <element signature="method#writeBlock#0;class#FileSystem#0" />
+            <element signature="method#readFat#0;class#FileSystem#0" />
+            <element signature="method#writeFat#0;class#FileSystem#0" />
+            <element signature="method#readDirEntry#0;class#FileSystem#0" />
+            <element signature="method#writeDirEntry#0;class#FileSystem#0" />
+            <element signature="method#init#0;class#FileSystem#0" />
             <element signature="method#mkdir#0;class#FileSystem#0" />
-            <element signature="method#follow#0;class#FileSystem#0" />
-            <element signature="method#access#0;class#FileSystem#0" />
             <element signature="method#first_free_FAT_entry#0;class#FileSystem#0" />
-            <element signature="e#10894#10895#0" expanded="true" />
-            <element signature="e#10912#10913#0" expanded="true" />
+            <element signature="method#createArchive#0;class#FileSystem#0" />
+            <element signature="method#unlink#0;class#FileSystem#0" />
+            <element signature="e#13101#13102#0" expanded="true" />
+            <element signature="e#13119#13120#0" expanded="true" />
+            <element signature="method#write#0;class#FileSystem#0" />
+            <element signature="method#append#0;class#FileSystem#0" />
+            <element signature="method#read#0;class#FileSystem#0" />
           </folding>
         </state>
       </provider>

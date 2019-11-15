@@ -183,24 +183,88 @@ public class FileSystem {
 	}
 
 	//ls [/caminho/diretorio] - listar diretorio
-	public static void ls(int blockPosition){
-		/* list entries from the current directory */
-		DirEntry dir_entry;
-		for (int i = 0; i < dir_entries; i++) {
-			dir_entry = readDirEntry(blockPosition, i);
+	public static void ls(String path){
+		String[] arrOfStr = path.split("/");
+		String[] newPath = arrOfStr;
 
-			//se a entrada de diretório nao esta vazia, printa seu nome
-			if (dir_entry.attributes != 0) {
-				System.out.println(dir_entry.filename.toString());
+		if(arrOfStr.length>1) {
+			newPath = new String[arrOfStr.length - 1];
+
+			int posicao = 0;
+			for (int i = 1; i < arrOfStr.length; i++) {
+				newPath[posicao] = arrOfStr[i];
 			}
+		}
+
+		followUntilFindDir(newPath,(short) 4);
+	}
+
+	public static void followUntilFindDir(String[] path, short blocoAtual){
+		//se é o ultimo diretorio do path, acessa e lista o mesmo
+		if(path.length==1) accessAndListDir(path[0], blocoAtual);
+		else {
+			boolean found = false;
+
+			//nome do diretorio que eu estou procurando
+			byte[] file = path[0].getBytes();
+
+			//confere cada entrada de diretório do blocoAtual
+			for (int i = 0; i < 32 && found == false; i++) {
+				DirEntry entry = readDirEntry(blocoAtual, i);
+
+				//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+				if (entry.filename == file) {
+					//se achou a entrada de diretorio, entra nela e passa path sem ela
+					found = true;
+
+					String[] newPath = new String[path.length - 1];
+					int posicao = 0;
+					for (int k = 1; k < path.length; k++) {
+						newPath[posicao] = path[i];
+					}
+
+					followUntilCreateDir(newPath, entry.first_block);
+				}
+			}
+
+			if (found == false) System.out.println("Não há nenhum diretório chamado /" + path[0]);
 		}
 	}
 
-	//mkdir [/caminho/diretorio] - criar diretorio
-	public static void mkdir(String s){
-		String[] arrOfStr = s.split("/");
+	public static void accessAndListDir(String path, short blocoAtual){
+		boolean found = false;
 
-		//DirEntry dir = readDirEntry(4, 0);
+		//nome do diretorio que eu estou procurando
+		byte[] file = path.getBytes();
+
+		//confere cada entrada de diretório do blocoAtual
+		for(int i=0; i<32 && found==false; i++){
+			DirEntry entry = readDirEntry(blocoAtual, i);
+
+			//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+			if(entry.filename == file){
+				//se achou a entrada de diretorio, entra em cada entrada de diretorio desse diretorio(bloco)
+				found = true;
+
+				DirEntry dir_entry;
+				for (int j = 0; j < dir_entries; j++) {
+					dir_entry = readDirEntry(i,j);
+					//se a entrada de diretório nao esta vazia, printa seu nome
+					if (dir_entry.attributes != 0) {
+						System.out.println(dir_entry.filename.toString());
+					}
+				}
+			}
+		}
+
+		//se o diretorio não existe, cria ele
+		if(found == false) System.out.println("O diretório chamado " + path + " não existe");
+
+	}
+
+	//mkdir [/caminho/diretorio] - criar diretorio
+	public static void mkdir(String path){
+		String[] arrOfStr = path.split("/");
 
 		String[] newPath = new String[arrOfStr.length-1];
 
@@ -209,45 +273,48 @@ public class FileSystem {
 			newPath[posicao] = arrOfStr[i];
 		}
 
-		followUntilCreate(newPath,(short) 4);
+		followUntilCreateDir(newPath,(short) 4);
 	}
 
-	private static void followUntilCreate(String[] path, short blocoAtual){
-		//se é o ultimo diretorio do path, acessa o mesmo
-		if(path.length==1) accessAndCreate(path.toString(), blocoAtual);
+	//vai acessando os subdiretorios até o penultimo e chama accessAndCreate para criar o ultimo
+	private static void followUntilCreateDir(String[] path, short blocoAtual){
+		//se é o ultimo diretorio do path, acessa e cria o mesmo
+		if(path.length==1) accessAndCreateDir(path[0], blocoAtual);
+		else {
+			boolean found = false;
 
-		boolean found = false;
+			//nome do diretorio que eu estou procurando
+			byte[] file = path[0].getBytes();
 
-		//nome do diretorio que eu estou procurando
-		byte[] file = path[0].getBytes();
+			//confere cada entrada de diretório do blocoAtual
+			for (int i = 0; i < 32 && found == false; i++) {
+				DirEntry entry = readDirEntry(blocoAtual, i);
 
-		//confere cada entrada de diretório do blocoAtual
-		for(int i=0; i<32 && found == false; i++){
-			DirEntry entry = readDirEntry(blocoAtual, i);
+				//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+				if (entry.filename == file) {
+					//se achou a entrada de diretorio, entra nela e passa path sem ela
+					found = true;
 
-			//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
-			if(entry.filename == file){
-				//se achou a entrada de diretorio, entra nela e passa path sem ela
-				found = true;
+					String[] newPath = new String[path.length - 1];
+					int posicao = 0;
+					for (int k = 1; k < path.length; k++) {
+						newPath[posicao] = path[i];
+					}
 
-				String[] newPath = new String[path.length-1];
-				int posicao = 0;
-				for(int k=1; k<path.length; k++){
-					newPath[posicao] = path[i];
+					followUntilCreateDir(newPath, entry.first_block);
 				}
-
-				followUntilAccess(newPath, entry.first_block);
 			}
-		}
 
-		if(found == false) System.out.println("Não há nenhum diretório chamado /" +  path[0]);
+			if (found == false) System.out.println("Não há nenhum diretório chamado /" + path[0]);
+		}
 	}
 
-	private static void accessAndCreate(String s, short blocoAtual){
+	//cria o diretorio descrito em path como entrada de diretorio no blocoAtual e como diretorio na FAT
+	private static void accessAndCreateDir(String path, short blocoAtual){
 		boolean found = false;
 
 		//nome do diretorio que eu estou procurando
-		byte[] file = s.getBytes();
+		byte[] file = path.getBytes();
 
 		//confere cada entrada de diretório do blocoAtual
 		for(int i=0; i<32 && found==false; i++){
@@ -257,7 +324,7 @@ public class FileSystem {
 			if(entry.filename == file){
 				//se achou a entrada de diretorio, printa que já existe e aborta
 				found = true;
-				System.out.println("O diretório chamado " + s + " já existe");
+				System.out.println("O diretório chamado " + path + " já existe");
 			}
 		}
 
@@ -294,7 +361,7 @@ public class FileSystem {
 
 					//cria a entrada de diretorio para adicionar na entrada de diretorio vazia do blocoAtual
 					DirEntry dir_entry = new DirEntry();
-					String name = s;
+					String name = path;
 					byte[] namebytes = name.getBytes();
 					for (int j = 0; j < namebytes.length; j++) {
 						dir_entry.filename[j] = namebytes[j];
@@ -317,6 +384,7 @@ public class FileSystem {
 		}
 	}
 
+	//devolve a primeira entrada vazia (0) da FAT
 	private static short first_free_FAT_entry(){
 		//int i=0;
 		for(int i=5; i<fat.length; i++){
@@ -346,37 +414,37 @@ public class FileSystem {
 	}
 
 	//unlink [/caminho/arquivo] - excluir arquivo ou diretorio (o diretorio precisa estar vazio)
-	public static void unlink(String s){
-		String[] arrOfStr = s.split("/");
+	public static void unlink(String path){
+		String[] arrOfStr = path.split("/");
 		for (String a : arrOfStr) {
 			System.out.println(a);
 		}
 	}
 
 	//retorna se o Diretorio esta vazio
-	public static boolean isDirEmpty(String s){
+	public static boolean isDirEmpty(String path){
 		return true;
 	}
 
 	//write "string" [/caminho/arquivo] - escrever dados em um arquivo (sobrescrever dados)
-	public static void write(String s){
-		String[] arrOfStr = s.split("/");
+	public static void write(String path){
+		String[] arrOfStr = path.split("/");
 		for (String a : arrOfStr) {
 			System.out.println(a);
 		}
 	}
 
 	//append "string" [/caminho/arquivo] - anexar dados em um arquivo
-	public static void append(String s){
-		String[] arrOfStr = s.split("/");
+	public static void append(String path){
+		String[] arrOfStr = path.split("/");
 		for (String a : arrOfStr) {
 			System.out.println(a);
 		}
 	}
 
 	//read [/caminho/arquivo] - ler o conteudo de um arquivo
-	public static void read(String s){
-		String[] arrOfStr = s.split("/");
+	public static void read(String path){
+		String[] arrOfStr = path.split("/");
 		for (String a : arrOfStr) {
 			System.out.println(a);
 		}
@@ -420,7 +488,7 @@ public class FileSystem {
 		dir_entry.size = 444;
 		writeDirEntry(root_block, 2, dir_entry);
 
-		ls(root_block);
+		ls("root");
 	}
 }
 
