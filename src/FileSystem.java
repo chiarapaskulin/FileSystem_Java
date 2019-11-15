@@ -189,13 +189,9 @@ public class FileSystem {
 		for (int i = 0; i < dir_entries; i++) {
 			dir_entry = readDirEntry(blockPosition, i);
 
+			//se a entrada de diretório nao esta vazia, printa seu nome
 			if (dir_entry.attributes != 0) {
-				for (int j = 0; j < dir_entry.filename.length ; j++) {
-					if (dir_entry.filename[j] != 0) {
-						System.out.print(Character.toString((char) Integer.parseInt(Byte.toString(dir_entry.filename[j]))));
-					}
-				}
-				System.out.println();
+				System.out.println(dir_entry.filename.toString());
 			}
 		}
 	}
@@ -213,12 +209,12 @@ public class FileSystem {
 			newPath[posicao] = arrOfStr[i];
 		}
 
-		follow(newPath,(short) 4);
+		followUntilCreate(newPath,(short) 4);
 	}
 
-	private static void follow(String[] path, short blocoAtual){
+	private static void followUntilCreate(String[] path, short blocoAtual){
 		//se é o ultimo diretorio do path, acessa o mesmo
-		if(path.length==1) access(path.toString(), blocoAtual);
+		if(path.length==1) accessAndCreate(path.toString(), blocoAtual);
 
 		boolean found = false;
 
@@ -240,14 +236,14 @@ public class FileSystem {
 					newPath[posicao] = path[i];
 				}
 
-				follow(newPath, entry.first_block);
+				followUntilAccess(newPath, entry.first_block);
 			}
 		}
 
 		if(found == false) System.out.println("Não há nenhum diretório chamado /" +  path[0]);
 	}
 
-	private static void access(String s, short blocoAtual){
+	private static void accessAndCreate(String s, short blocoAtual){
 		boolean found = false;
 
 		//nome do diretorio que eu estou procurando
