@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83e7c231-3aed-4d48-94a8-afcfcd116ef5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/DirEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DirEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/FileSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FileSystem.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="292" column="21" lean-forward="true" selection-start-line="292" selection-start-column="21" selection-end-line="292" selection-end-column="21" />
+            <state relative-caret-position="204">
+              <caret line="306" column="66" selection-start-line="306" selection-start-column="66" selection-end-line="306" selection-end-column="66" />
               <folding>
                 <element signature="e#9481#9482#0" expanded="true" />
                 <element signature="e#9499#9500#0" expanded="true" />
@@ -137,12 +136,12 @@
       <updated>1573159834452</updated>
       <workItem from="1573159835870" duration="1672000" />
       <workItem from="1573686482316" duration="99000" />
-      <workItem from="1573764720388" duration="6402000" />
+      <workItem from="1573764720388" duration="7044000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13368000" />
+    <option name="totallyTimeSpent" value="14010000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
@@ -235,8 +234,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="292" column="21" lean-forward="true" selection-start-line="292" selection-start-column="21" selection-end-line="292" selection-end-column="21" />
+        <state relative-caret-position="204">
+          <caret line="306" column="66" selection-start-line="306" selection-start-column="66" selection-end-line="306" selection-end-column="66" />
           <folding>
             <element signature="e#9481#9482#0" expanded="true" />
             <element signature="e#9499#9500#0" expanded="true" />

@@ -269,29 +269,42 @@ public class FileSystem {
 				}
 			}
 
+			//se não achou uma entrada de diretorio vazia, avisa que ele esta cheio
 			if(found==false){
 				System.out.println("O diretório está cheio");
-			}else {
-				DirEntry dir_entry = new DirEntry();
-				String name = s;
-				byte[] namebytes = name.getBytes();
-				for (int j = 0; j < namebytes.length; j++) {
-					dir_entry.filename[j] = namebytes[j];
-				}
 
+			//se achou uma entrada de diretorio vaiza, prossegue
+			}else {
+				//procura a primeira entrada livre da FAT
 				short firstblock = first_free_FAT_entry();
+				//return 0 significa que a FAT está cheia, então para de processar
 				if(firstblock==0){
 					System.out.println("A FAT está cheia");
-				}else {
+				}else{
+					//define a entrada firstblock da FAT como utilizada (fim de arquivo 0x7fff)
+					fat[firstblock]=0x7fff;
+					//atualiza a FAT no arquivo .dat
+					writeFat("filesystem.dat", fat);
+
+					//cria a entrada de diretorio para adicionar na entrada de diretorio vazia do blocoAtual
+					DirEntry dir_entry = new DirEntry();
+					String name = s;
+					byte[] namebytes = name.getBytes();
+					for (int j = 0; j < namebytes.length; j++) {
+						dir_entry.filename[j] = namebytes[j];
+					}
+					//define informacoes da entrada de diretorio
 					dir_entry.attributes = 0x02;
 					dir_entry.first_block = firstblock;
 					dir_entry.size = 0;
+					//escreve a entrada de diretorio criada na entrada de diretorio i do blocoAtual
 					writeDirEntry(blocoAtual, i, dir_entry);
 
+					//cria um bloco completamente VAZIO
 					for (int j = 0; j < block_size/*1024 bytes*/; j++) {
 						data_block[j] = 0;
 					}
-
+					//escreve o bloco VAZIO criado no arquivo .dat
 					writeBlock("filesystem.dat", firstblock, data_block);
 				}
 			}
