@@ -203,10 +203,132 @@ public class FileSystem {
 	//mkdir [/caminho/diretorio] - criar diretorio
 	public static void mkdir(String s){
 		String[] arrOfStr = s.split("/");
-		for (String a : arrOfStr) {
-			System.out.println(a);
+
+		//DirEntry dir = readDirEntry(4, 0);
+
+		String[] newPath = new String[arrOfStr.length-1];
+
+		int posicao = 0;
+		for(int i=1; i<arrOfStr.length; i++){
+			newPath[posicao] = arrOfStr[i];
 		}
 
+		follow(newPath,(short) 4);
+	}
+
+	private static void follow(String[] path, short blocoAtual){
+		//se é o ultimo diretorio do path, acessa o mesmo
+		if(path.length==1) access(path.toString(), blocoAtual);
+
+		boolean found = false;
+
+		//nome do diretorio que eu estou procurando
+		byte[] file = path[0].getBytes();
+
+		//confere cada entrada de diretório do blocoAtual
+		for(int i=0; i<32 && found == false; i++){
+			DirEntry entry = readDirEntry(blocoAtual, i);
+
+			//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+			if(entry.filename == file){
+				//se achou a entrada de diretorio, entra nela e passa path sem ela
+				found = true;
+
+				String[] newPath = new String[path.length-1];
+				int posicao = 0;
+				for(int k=1; k<path.length; k++){
+					newPath[posicao] = path[i];
+				}
+
+				follow(newPath, entry.first_block);
+			}
+		}
+
+		if(found == false) System.out.println("Não há nenhum diretório chamado /" +  path[0]);
+	}
+
+	private static void access(String s, short blocoAtual){
+		boolean found = false;
+
+		//nome do diretorio que eu estou procurando
+		byte[] file = s.getBytes();
+
+		//confere cada entrada de diretório do blocoAtual
+		for(int i=0; i<32 && found==false; i++){
+			DirEntry entry = readDirEntry(blocoAtual, i);
+
+			//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+			if(entry.filename == file){
+				//se achou a entrada de diretorio, printa que já existe e aborta
+				found = true;
+				System.out.println("O diretório chamado " + s + " já existe");
+			}
+		}
+
+		//se o diretorio não existe, cria ele
+		if(found == false){
+			//procura a primeira entrada de diretorio vazia
+			int i = 0;
+			for(i=0; i<32 && found==false; i++){
+				DirEntry entry = readDirEntry(blocoAtual, i);
+
+				//confere se a entrada de diretorio esta vazia
+				if(entry.attributes == 0){
+					//se a entrada de diretorio esta vazia, sai do loop
+					found = true;
+				}
+			}
+
+			//se não achou uma entrada de diretorio vazia, avisa que ele esta cheio
+			if(found==false){
+				System.out.println("O diretório está cheio");
+
+			//se achou uma entrada de diretorio vaiza, prossegue
+			}else {
+				//procura a primeira entrada livre da FAT
+				short firstblock = first_free_FAT_entry();
+				//return 0 significa que a FAT está cheia, então para de processar
+				if(firstblock==0){
+					System.out.println("A FAT está cheia");
+				}else{
+					//define a entrada firstblock da FAT como utilizada (fim de arquivo 0x7fff)
+					fat[firstblock]=0x7fff;
+					//atualiza a FAT no arquivo .dat
+					writeFat("filesystem.dat", fat);
+
+					//cria a entrada de diretorio para adicionar na entrada de diretorio vazia do blocoAtual
+					DirEntry dir_entry = new DirEntry();
+					String name = s;
+					byte[] namebytes = name.getBytes();
+					for (int j = 0; j < namebytes.length; j++) {
+						dir_entry.filename[j] = namebytes[j];
+					}
+					//define informacoes da entrada de diretorio
+					dir_entry.attributes = 0x02;
+					dir_entry.first_block = firstblock;
+					dir_entry.size = 0;
+					//escreve a entrada de diretorio criada na entrada de diretorio i do blocoAtual
+					writeDirEntry(blocoAtual, i, dir_entry);
+
+					//cria um bloco completamente VAZIO
+					for (int j = 0; j < block_size/*1024 bytes*/; j++) {
+						data_block[j] = 0;
+					}
+					//escreve o bloco VAZIO criado no arquivo .dat
+					writeBlock("filesystem.dat", firstblock, data_block);
+				}
+			}
+		}
+	}
+
+	private static short first_free_FAT_entry(){
+		//int i=0;
+		for(int i=5; i<fat.length; i++){
+			if(fat[i] == 0) return (short) i;
+		}
+
+		//0 deve ser tratado na chamada do método, pois indica que não há lugar na FAT
+		return 0;
 	}
 
 	//create [/caminho/arquivo] - criar arquivo
