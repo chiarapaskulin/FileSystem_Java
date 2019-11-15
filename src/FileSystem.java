@@ -183,10 +183,20 @@ public class FileSystem {
 	}
 
 	//ls [/caminho/diretorio] - listar diretorio
-	public static void ls(String s){
-		String[] arrOfStr = s.split("/");
-		for (String a : arrOfStr) {
-			System.out.println(a);
+	public static void ls(int blockPosition){
+		/* list entries from the current directory */
+		DirEntry dir_entry;
+		for (int i = 0; i < dir_entries; i++) {
+			dir_entry = readDirEntry(blockPosition, i);
+
+			if (dir_entry.attributes != 0) {
+				for (int j = 0; j < dir_entry.filename.length ; j++) {
+					if (dir_entry.filename[j] != 0) {
+						System.out.print(Character.toString((char) Integer.parseInt(Byte.toString(dir_entry.filename[j]))));
+					}
+				}
+				System.out.println();
+			}
 		}
 	}
 
@@ -200,11 +210,21 @@ public class FileSystem {
 	}
 
 	//create [/caminho/arquivo] - criar arquivo
-	public static void createArchive(String s){
-		String[] arrOfStr = s.split("/");
-		for (String a : arrOfStr) {
-			System.out.println(a);
+	public static void createArchive(String name, int size, int block){
+		DirEntry dir_entry = new DirEntry();
+		byte[] namebytes = name.getBytes();
+		for (int i = 0; i < namebytes.length; i++) {
+			dir_entry.filename[i] = namebytes[i];
 		}
+		dir_entry.attributes = 0x01;
+
+		//		Descobir isso aqui
+		dir_entry.first_block = 1111;
+
+		dir_entry.size = size;
+
+//		Entry é posicao do diretorio
+		writeDirEntry(block, 0, dir_entry);
 	}
 
 	//unlink [/caminho/arquivo] - excluir arquivo ou diretorio (o diretorio precisa estar vazio)
@@ -244,6 +264,8 @@ public class FileSystem {
 		}
 	}
 
+
+
 	public static void main(String args[]) {
 		readFat("filesystem.dat");
 
@@ -280,12 +302,7 @@ public class FileSystem {
 		dir_entry.size = 444;
 		writeDirEntry(root_block, 2, dir_entry);
 
-		/* list entries from the root directory */
-		//for (int i = 0; i < dir_entries; i++) {
-		//	dir_entry = readDirEntry(root_block, i);
-		//	System.out.println("Entry " + i + ", file: " + new String(dir_entry.filename) + " attr: " +
-		//	dir_entry.attributes + " first: " + dir_entry.first_block + " size: " + dir_entry.size);
-		//}
+		ls(root_block);
 	}
 }
 
