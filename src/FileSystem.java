@@ -182,6 +182,50 @@ public class FileSystem {
 		}
 	}
 
+	//devolve a primeira entrada vazia (0) da FAT
+	private static short first_free_FAT_entry(){
+		//i começa em 5 pois de 0 a 3 são os blocos da FAT e 4 é o bloco do root
+		for(int i=5; i<fat.length; i++){
+			if(fat[i] == 0) return (short) i;
+		}
+
+		//-1 deve ser tratado na chamada do método, pois indica que não há lugar na FAT
+		return -1;
+	}
+
+	private static short first_free_dir_entry(int blocoAtual){
+		for(int i=0; i<32; i++){
+			DirEntry entry = readDirEntry(blocoAtual, i);
+
+			//confere se a entrada de diretorio esta vazia
+			if(entry.attributes == 0){
+				//se a entrada de diretorio esta vazia, retorna seu numero
+				return (short) i;
+			}
+		}
+
+		//-1 deve ser tratado na chamada do método, pois indica que não há lugar no bloco
+		return -1;
+	}
+
+	private static boolean does_entry_exists(int blocoAtual, String path){
+		//nome do diretorio que eu estou procurando
+		byte[] file = path.getBytes();
+
+		//confere cada entrada de diretório do blocoAtual
+		for(int i=0; i<32; i++){
+			DirEntry entry = readDirEntry(blocoAtual, i);
+
+			//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+			if(entry.filename == file){
+				//se achou a entrada de diretorio, retorna true
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	//ls [/caminho/diretorio] - listar diretorio
 	public static void ls(String path){
 		String[] arrOfStr = path.split("/");
@@ -191,6 +235,7 @@ public class FileSystem {
 		followUntilFindDir(arrOfStr,(short) 4);
 	}
 
+	//vai acessando os subdiretorios até o ultimo e chama accessAndListDir para listar o ultimo diretorio
 	private static void followUntilFindDir(String[] path, short blocoAtual){
 		//se é o ultimo diretorio do path, acessa seu diretorio pai, acessa ele e lista ele
 		if(path.length==1) accessAndListDir(path[0], blocoAtual);
@@ -226,6 +271,7 @@ public class FileSystem {
 		}
 	}
 
+	//lista o diretorio descrito em path que tem seu bloco como blocoAtual
 	private static void accessAndListDir(String path, short blocoAtual){
 		//nome do diretorio atual de blocoAtual
 		byte[] file = path.getBytes();
@@ -300,46 +346,28 @@ public class FileSystem {
 	private static void accessAndCreateDir(String path, short blocoAtual){
 		boolean found = false;
 
-		//nome do diretorio que eu estou procurando
-		byte[] file = path.getBytes();
+		//se o diretorio existe, printa que ele já existe
+		if(does_entry_exists(blocoAtual, path)){
+			System.out.println("O arquivo/entrada de diretório chamado " + path + " já existe");
 
-		//confere cada entrada de diretório do blocoAtual
-		for(int i=0; i<32 && found==false; i++){
-			DirEntry entry = readDirEntry(blocoAtual, i);
-
-			//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
-			if(entry.filename == file){
-				//se achou a entrada de diretorio, printa que já existe e aborta
-				found = true;
-				System.out.println("O diretório chamado " + path + " já existe");
-			}
-		}
-
-		//se o diretorio não existe, cria ele
-		if(found == false){
-			//procura a primeira entrada de diretorio vazia
-			int i = 0;
-			for(i=0; i<32 && found==false; i++){
-				DirEntry entry = readDirEntry(blocoAtual, i);
-
-				//confere se a entrada de diretorio esta vazia
-				if(entry.attributes == 0){
-					//se a entrada de diretorio esta vazia, sai do loop
-					found = true;
-				}
-			}
+			//se o diretorio não existe, cria ele
+		}else{
+			//procura a primeira entrada de diretorio vazia para criar o subdiretorio
+			int entradaDeDirVazia = first_free_dir_entry(blocoAtual);
 
 			//se não achou uma entrada de diretorio vazia, avisa que ele esta cheio
-			if(found==false){
+			if(entradaDeDirVazia==-1){
 				System.out.println("O diretório está cheio");
 
 			//se achou uma entrada de diretorio vaiza, prossegue
-			}else {
+			}else{
 				//procura a primeira entrada livre da FAT
 				short firstblock = first_free_FAT_entry();
-				//return 0 significa que a FAT está cheia, então para de processar
-				if(firstblock==0){
+
+				//return -1 significa que a FAT está cheia, então para de processar
+				if(firstblock==-1){
 					System.out.println("A FAT está cheia");
+
 				}else{
 					//define a entrada firstblock da FAT como utilizada (fim de arquivo 0x7fff)
 					fat[firstblock]=0x7fff;
@@ -358,12 +386,13 @@ public class FileSystem {
 					dir_entry.first_block = firstblock;
 					dir_entry.size = 0;
 					//escreve a entrada de diretorio criada na entrada de diretorio i do blocoAtual
-					writeDirEntry(blocoAtual, i, dir_entry);
+					writeDirEntry(blocoAtual, entradaDeDirVazia, dir_entry);
 
 					//cria um bloco completamente VAZIO
 					for (int j = 0; j < block_size/*1024 bytes*/; j++) {
 						data_block[j] = 0;
 					}
+
 					//escreve o bloco VAZIO criado no arquivo .dat
 					writeBlock("filesystem.dat", firstblock, data_block);
 				}
@@ -371,33 +400,110 @@ public class FileSystem {
 		}
 	}
 
-	//devolve a primeira entrada vazia (0) da FAT
-	private static short first_free_FAT_entry(){
-		//int i=0;
-		for(int i=5; i<fat.length; i++){
-			if(fat[i] == 0) return (short) i;
-		}
-
-		//0 deve ser tratado na chamada do método, pois indica que não há lugar na FAT
-		return 0;
+	//create [/caminho/arquivo] - criar arquivo
+	public static void createArchive(String path, String content, int size){
+		String[] arrOfStr = path.split("/");
+		//passa o path completo
+		//a primeira posicao do array é o diretorio ATUAL
+		//o blocoAtual é o número do bloco do diretorio ATUAL
+		followUntilCreateArchive(arrOfStr,(short) 4, content, size);
 	}
 
-	//create [/caminho/arquivo] - criar arquivo
-	public static void createArchive(String name, int size, int block){
-		DirEntry dir_entry = new DirEntry();
-		byte[] namebytes = name.getBytes();
-		for (int i = 0; i < namebytes.length; i++) {
-			dir_entry.filename[i] = namebytes[i];
+	private static void followUntilCreateArchive(String[] path, short blocoAtual, String content, int size){
+		//se [0] é o ultimo diretorio do path e [1] é o arquivo que tem que ser criado, acessa ele e cria o arquivo
+		if(path.length==2) accessAndCreateArchive(path, blocoAtual, content, size);
+		else{
+			boolean found = false;
+
+			//nome do diretorio que eu estou procurando é pego no path[1], porque path[0] é o atual
+			byte[] file = path[1].getBytes();
+
+			//confere cada entrada de diretório do blocoAtual
+			for (int i = 0; i < 32 && found == false; i++) {
+				DirEntry entry = readDirEntry(blocoAtual, i);
+
+				//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+				if (entry.filename == file) {
+					//se achou a entrada de diretorio, entra nela e passa path sem o diretorio atual
+					found = true;
+
+					String[] newPath = new String[path.length - 1];
+					int posicao = 0;
+					for (int k = 1; k < path.length; k++) {
+						newPath[posicao] = path[i];
+					}
+
+					//chama o metodo recursivamente com path[0], que agora é o diretorio que vamos entrar
+					//e com entry.first_bloc, que é o numero do bloco desse diretorio
+					accessAndCreateArchive(path, blocoAtual, content, size);
+				}
+			}
+
+			//printa que não achou o diretorio path[1], que é o que está sendo procurado no atual path[0]
+			if (found == false) System.out.println("Não há nenhum diretório chamado /" + path[1]);
 		}
-		dir_entry.attributes = 0x01;
+	}
 
-		//		Descobir isso aqui
-		dir_entry.first_block = 1111;
+	private static void accessAndCreateArchive(String[] path, short blocoAtual, String content, int size){
+		boolean found = false;
 
-		dir_entry.size = size;
+		//nome do diretorio atual do bloco atual
+		byte[] file = path[0].getBytes();
 
-//		Entry é posicao do diretorio
-		writeDirEntry(block, 0, dir_entry);
+		if(does_entry_exists(blocoAtual,path[1])){
+			System.out.println("O arquivo/entrada de diretório chamado " + path[1] + " já existe");
+			//se não tem nenhuma entrada de diretório com esse nome, cria o arquivo
+		}else{
+			//procura a primeira entrada de diretorio vazia para criar o arquivo
+			int entradaDeDirVazia = first_free_dir_entry(blocoAtual);
+
+			//se não achou uma entrada de diretorio vazia, avisa que ele esta cheio
+			if(entradaDeDirVazia==-1){
+				System.out.println("O diretório está cheio");
+
+				//se achou uma entrada de diretorio vazia, prossegue com a criacao do arquivo
+			}else {
+				//procura a primeira entrada livre da FAT
+				short firstblock = first_free_FAT_entry();
+				//return 0 significa que a FAT está cheia, então para de processar
+				if(firstblock==0){
+					System.out.println("A FAT está cheia");
+				}else{
+					//faz um processamento especial para um arquivo maior que 1024 bytes
+					if(size>1024){
+						//~~processamento
+
+					}else {
+						//define a entrada firstblock da FAT como utilizada (fim de arquivo 0x7fff)
+						fat[firstblock] = 0x7fff;
+						//atualiza a FAT no arquivo .dat
+						writeFat("filesystem.dat", fat);
+
+						//cria a entrada de diretorio com o arquivo para adicionar na entrada de diretorio do blocoAtual
+						DirEntry dir_entry = new DirEntry();
+						String name = path[1];
+						byte[] namebytes = name.getBytes();
+						for (int j = 0; j < namebytes.length; j++) {
+							dir_entry.filename[j] = namebytes[j];
+						}
+						//define informacoes da entrada de diretorio
+						dir_entry.attributes = 0x01; //arquivo
+						dir_entry.first_block = firstblock;
+						dir_entry.size = size;
+						//escreve a entrada de diretorio criada na entrada de diretorio i do blocoAtual
+						writeDirEntry(blocoAtual, entradaDeDirVazia, dir_entry);
+
+						//cria um bloco com o conteúdo que foi passado por parâmetro
+						byte[] contentBytes = content.getBytes();
+						for (int j = 0; j < contentBytes.length/*menor que 1024 bytes*/; j++) {
+							data_block[j] = contentBytes[j];
+						}
+						//escreve o bloco criado com o conteúdo no arquivo .dat
+						writeBlock("filesystem.dat", firstblock, data_block);
+					}
+				}
+			}
+		}
 	}
 
 	//unlink [/caminho/arquivo] - excluir arquivo ou diretorio (o diretorio precisa estar vazio)
