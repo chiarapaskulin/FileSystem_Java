@@ -666,38 +666,6 @@ public class FileSystem {
 		//init();
 		fat = readFat("filesystem.dat");
 
-		/*DirEntry dir_entry = new DirEntry();
-		String name = "file1";
-		byte[] namebytes = name.getBytes();
-		for (int i = 0; i < namebytes.length; i++) {
-			dir_entry.filename[i] = namebytes[i];
-		}
-		dir_entry.attributes = 0x01;
-		dir_entry.first_block = 1111;
-		dir_entry.size = 222;
-		writeDirEntry(root_block, 0, dir_entry);
-
-		*//* fill three root directory entries and list them *//*
-		name = "file2";
-		namebytes = name.getBytes();
-		for (int i = 0; i < namebytes.length; i++) {
-			dir_entry.filename[i] = namebytes[i];
-		}
-		dir_entry.attributes = 0x01;
-		dir_entry.first_block = 2222;
-		dir_entry.size = 333;
-		writeDirEntry(root_block, 1, dir_entry);
-
-		name = "file3";
-		namebytes = name.getBytes();
-		for (int i = 0; i < namebytes.length; i++) {
-			dir_entry.filename[i] = namebytes[i];
-		}
-		dir_entry.attributes = 0x01;
-		dir_entry.first_block = 3333;
-		dir_entry.size = 444;
-		writeDirEntry(root_block, 2, dir_entry);*/
-
 		System.out.println("LS EM ROOT: ");
 		ls("root");
 
