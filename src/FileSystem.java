@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.DataInputStream;
 import java.io.FilterInputStream;
+import java.util.ArrayList;
 
 public class FileSystem {
 	static int block_size = 1024; //1024 bytes
@@ -25,9 +26,9 @@ public class FileSystem {
 	*/
 
 	/* FAT data structure */
-	final static short[] fat = new short[blocks]; //2048 representacoes de bloco de 2 bytes cada = 4096 bytes = 4 blocos
+	static short[] fat = new short[blocks]; //2048 representacoes de bloco de 2 bytes cada = 4096 bytes = 4 blocos
 	/* data block */
-	final static byte[] data_block = new byte[block_size]; //1 bloco local de tamanho 1024 bytes
+	static byte[] data_block = new byte[block_size]; //1 bloco local de tamanho 1024 bytes
 
 	/* reads a data block from disk */
 	public static byte[] readBlock(String file, int block) {
@@ -209,21 +210,37 @@ public class FileSystem {
 	}
 
 	private static boolean does_entry_exists(int blocoAtual, String path){
-		//nome do diretorio que eu estou procurando
-		byte[] file = path.getBytes();
-
 		//confere cada entrada de diretório do blocoAtual
 		for(int i=0; i<32; i++){
 			DirEntry entry = readDirEntry(blocoAtual, i);
-
-			//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
-			if(entry.filename == file){
-				//se achou a entrada de diretorio, retorna true
-				return true;
+			if(entry.attributes!=0) {
+				byte[] b = new byte[1];
+				String dirName = "";
+				for (int k = 0; k < entry.filename.length; k++) {
+					if (entry.filename[k] != 0) {
+						b[0] = entry.filename[k];
+						try {
+							dirName += new String(b, "UTF-8");
+						} catch (Exception e) {
+						}
+					} else break;
+				}
+				//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+				if (dirName.equals(path)) {
+					//se achou a entrada de diretorio, retorna true
+					return true;
+				}
 			}
 		}
 
 		return false;
+	}
+
+	private static int roundUp(double num){
+		if ((num-(int)num) > 0.0 ){
+			num += 1;
+		}
+		return (int)num;
 	}
 
 	//ls [/caminho/diretorio] - listar diretorio
@@ -243,26 +260,38 @@ public class FileSystem {
 			boolean found = false;
 
 			//nome do diretorio que eu estou procurando é pego no path[1], porque path[0] é o atual
-			byte[] file = path[1].getBytes();
+			String arcName = path[1];
 
 			//confere cada entrada de diretório do blocoAtual
-			for (int i = 0; i < 32 && found == false; i++) {
+			for (int i = 0; i < 32 && found == false; i++){
 				DirEntry entry = readDirEntry(blocoAtual, i);
+				byte[] b = new byte[1];
+				String dirName = "";
+				for(int k=0; k<entry.filename.length; k++){
+					if(entry.filename[k]!=0){
+						b[0] = entry.filename[k];
+						try {
+							dirName+= new String(b, "UTF-8");
+						}catch(Exception e){}
+					}
+					else break;
+				}
 
 				//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
-				if (entry.filename == file) {
+				if (dirName.equals(arcName)) {
 					//se achou a entrada de diretorio, entra nela e passa path sem o diretorio atual
 					found = true;
 
 					String[] newPath = new String[path.length - 1];
 					int posicao = 0;
 					for (int k = 1; k < path.length; k++) {
-						newPath[posicao] = path[i];
+						newPath[posicao] = path[k];
+						posicao++;
 					}
 
 					//chama o metodo recursivamente com path[0], que agora é o diretorio que vamos entrar
 					//e com entry.first_bloc, que é o numero do bloco desse diretorio
-					followUntilCreateDir(newPath, entry.first_block);
+					followUntilFindDir(newPath, entry.first_block);
 				}
 			}
 
@@ -302,6 +331,7 @@ public class FileSystem {
 		int posicao = 0;
 		for(int i=1; i<arrOfStr.length; i++){
 			newPath[posicao] = arrOfStr[i];
+			posicao++;
 		}
 
 		//a primeira posicao do array é o diretorio SEGUINTE, o que tem que ser buscado no blocoAtual
@@ -317,21 +347,33 @@ public class FileSystem {
 			boolean found = false;
 
 			//nome do diretorio que eu estou procurando no blocoAtual
-			byte[] file = path[0].getBytes();
+			String arcName = path[0];
 
 			//confere cada entrada de diretório do blocoAtual para ver se acha nele o diretorio que eu estou procurando
 			for (int i = 0; i < 32 && found == false; i++) {
 				DirEntry entry = readDirEntry(blocoAtual, i);
+				byte[] b = new byte[1];
+				String dirName = "";
+				for(int k=0; k<entry.filename.length; k++){
+					if(entry.filename[k]!=0){
+						b[0] = entry.filename[k];
+						try {
+							dirName+= new String(b, "UTF-8");
+						}catch(Exception e){}
+					}
+					else break;
+				}
 
 				//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
-				if (entry.filename == file) {
+				if (dirName.equals(arcName)) {
 					//se achou a entrada de diretorio, entra nela e passa path sem ela
 					found = true;
 
 					String[] newPath = new String[path.length - 1];
 					int posicao = 0;
 					for (int k = 1; k < path.length; k++) {
-						newPath[posicao] = path[i];
+						newPath[posicao] = path[k];
+						posicao++;
 					}
 
 					followUntilCreateDir(newPath, entry.first_block);
@@ -348,7 +390,7 @@ public class FileSystem {
 
 		//se o diretorio existe, printa que ele já existe
 		if(does_entry_exists(blocoAtual, path)){
-			System.out.println("O arquivo/entrada de diretório chamado " + path + " já existe");
+			System.out.println("O arquivo/entrada de diretório chamado ''" + path + "'' já existe");
 
 			//se o diretorio não existe, cria ele
 		}else{
@@ -395,6 +437,7 @@ public class FileSystem {
 
 					//escreve o bloco VAZIO criado no arquivo .dat
 					writeBlock("filesystem.dat", firstblock, data_block);
+					writeFat("filesystem.dat", fat);
 				}
 			}
 		}
@@ -416,26 +459,38 @@ public class FileSystem {
 			boolean found = false;
 
 			//nome do diretorio que eu estou procurando é pego no path[1], porque path[0] é o atual
-			byte[] file = path[1].getBytes();
+			String arcName = path[1];
 
 			//confere cada entrada de diretório do blocoAtual
 			for (int i = 0; i < 32 && found == false; i++) {
 				DirEntry entry = readDirEntry(blocoAtual, i);
+				byte[] b = new byte[1];
+				String dirName = "";
+				for(int k=0; k<entry.filename.length; k++){
+					if(entry.filename[k]!=0){
+						b[0] = entry.filename[k];
+						try {
+							dirName+= new String(b, "UTF-8");
+						}catch(Exception e){}
+					}
+					else break;
+				}
 
 				//compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
-				if (entry.filename == file) {
+				if (dirName.equals(arcName)) {
 					//se achou a entrada de diretorio, entra nela e passa path sem o diretorio atual
 					found = true;
 
 					String[] newPath = new String[path.length - 1];
 					int posicao = 0;
 					for (int k = 1; k < path.length; k++) {
-						newPath[posicao] = path[i];
+						newPath[posicao] = path[k];
+						posicao++;
 					}
 
 					//chama o metodo recursivamente com path[0], que agora é o diretorio que vamos entrar
 					//e com entry.first_bloc, que é o numero do bloco desse diretorio
-					accessAndCreateArchive(path, blocoAtual, content, size);
+					followUntilCreateArchive(newPath, entry.first_block, content, size);
 				}
 			}
 
@@ -451,7 +506,7 @@ public class FileSystem {
 		byte[] file = path[0].getBytes();
 
 		if(does_entry_exists(blocoAtual,path[1])){
-			System.out.println("O arquivo/entrada de diretório chamado " + path[1] + " já existe");
+			System.out.println("O arquivo/entrada de diretório chamado ''" + path[1] + "'' já existe");
 			//se não tem nenhuma entrada de diretório com esse nome, cria o arquivo
 		}else{
 			//procura a primeira entrada de diretorio vazia para criar o arquivo
@@ -466,12 +521,76 @@ public class FileSystem {
 				//procura a primeira entrada livre da FAT
 				short firstblock = first_free_FAT_entry();
 				//return 0 significa que a FAT está cheia, então para de processar
-				if(firstblock==0){
+				if(firstblock==-1){
 					System.out.println("A FAT está cheia");
 				}else{
 					//faz um processamento especial para um arquivo maior que 1024 bytes
 					if(size>1024){
-						//~~processamento
+						//define a quantidade de blocos que terão que ser utilizados
+						int qt_blocos = roundUp(size/1024);
+
+						//cria um Array de números de blocos para facilitar a manipulacao
+						ArrayList<Short> blocosFAT = new ArrayList<>();
+
+						//adiciona 0x7fff no primeiro bloco (para indicar que ele está em uso), adiciona ele na lista e subtrai a quantidade de blocos necessaria
+						blocosFAT.add(firstblock);
+						fat[firstblock] = 0x7fff;
+						qt_blocos--;
+
+						//procura o proximo bloco vazio, adiciona ele na lista e indica que ele está em uso; subtrai a qtidade de blcoos necessaria
+						for(int i=0; i<qt_blocos; i++){
+							short nextblock = first_free_FAT_entry();
+							blocosFAT.add(nextblock);
+							fat[nextblock] = 0x7fff;
+							qt_blocos--;
+						}
+
+						//depois que todos os blocos estão marcados como 0x7fff (final de arquivo),
+						//marcamos de trás pra frente a ligação de um com os outros
+						//o ultimo bloco já está marcado como fim de arquivo, o que é correto (por isso começamos com blocosFAT.size()-2
+						//agora devemos marcar o penultimo bloco com o numero do ultimo e assim por diante
+						for(int i=blocosFAT.size()-2; i>=0; i++){
+							short b_atual = blocosFAT.get(i);
+							short b_anterior = blocosFAT.get(i+1);
+							fat[b_atual] = b_anterior;
+						}
+
+						//atualiza a FAT no arquivo .dat
+						writeFat("filesystem.dat", fat);
+
+						//cria a entrada de diretorio com o arquivo para adicionar na entrada de diretorio do blocoAtual
+						DirEntry dir_entry = new DirEntry();
+						String name = path[1];
+						byte[] namebytes = name.getBytes();
+						for (int j = 0; j < namebytes.length; j++) {
+							dir_entry.filename[j] = namebytes[j];
+						}
+						//define informacoes da entrada de diretorio
+						dir_entry.attributes = 0x01; //arquivo
+						dir_entry.first_block = firstblock;
+						dir_entry.size = size;
+						//escreve a entrada de diretorio criada na entrada de diretorio i do blocoAtual
+						writeDirEntry(blocoAtual, entradaDeDirVazia, dir_entry);
+
+
+						//cria blocos com o conteúdo que foi passado por parâmetro
+						byte[] contentBytes = content.getBytes();
+						int contConteudo = 0;
+
+						//para cada bloco, escreve o conteudo dentro dele e adiciona no .dat
+						for(int i=0; i<blocosFAT.size(); i++){
+							//em cada bloco, coloca 1024 bytes de conteudo até acabar o conteudo, daí passa a colocar 0
+							for (int j = 0; j < 1024; j++) {
+								if(contConteudo>contentBytes.length){
+									data_block[j] = 0;
+								}else {
+									data_block[j] = contentBytes[contConteudo];
+									contConteudo++;
+								}
+							}
+							//escreve o bloco criado com o conteúdo no arquivo .dat na posicao da FAT do bloco
+							writeBlock("filesystem.dat", blocosFAT.get(i), data_block);
+						}
 
 					}else {
 						//define a entrada firstblock da FAT como utilizada (fim de arquivo 0x7fff)
@@ -544,9 +663,10 @@ public class FileSystem {
 	}
 
 	public static void main(String args[]) {
-		readFat("filesystem.dat");
+		//init();
+		fat = readFat("filesystem.dat");
 
-		DirEntry dir_entry = new DirEntry();
+		/*DirEntry dir_entry = new DirEntry();
 		String name = "file1";
 		byte[] namebytes = name.getBytes();
 		for (int i = 0; i < namebytes.length; i++) {
@@ -557,7 +677,7 @@ public class FileSystem {
 		dir_entry.size = 222;
 		writeDirEntry(root_block, 0, dir_entry);
 
-		/* fill three root directory entries and list them */
+		*//* fill three root directory entries and list them *//*
 		name = "file2";
 		namebytes = name.getBytes();
 		for (int i = 0; i < namebytes.length; i++) {
@@ -576,7 +696,7 @@ public class FileSystem {
 		dir_entry.attributes = 0x01;
 		dir_entry.first_block = 3333;
 		dir_entry.size = 444;
-		writeDirEntry(root_block, 2, dir_entry);
+		writeDirEntry(root_block, 2, dir_entry);*/
 
 		System.out.println("LS EM ROOT: ");
 		ls("root");
@@ -586,6 +706,23 @@ public class FileSystem {
 
 		System.out.println("\nLS EM ROOT: ");
 		ls("root");
+
+		System.out.println("\nCRIANDO ARQUIVO EM ROOT");
+		String conteudo = "conteudoooooooooooarquivo_dentro_de_root";
+		createArchive("root/arquivo", conteudo, conteudo.getBytes().length);
+
+		System.out.println("\nLS EM ROOT: ");
+		ls("root");
+
+		System.out.println("\nCRIANDO ARQUIVO EM ROOT/OI");
+		conteudo = "conteudoooooooo_arquivo_dentro_de_oi";
+		createArchive("root/oi/arquivodeoi", conteudo, conteudo.getBytes().length);
+
+		System.out.println("\nLS EM ROOT: ");
+		ls("root");
+
+		System.out.println("\nLS EM ROOT/OI: ");
+		ls("root/oi");
 	}
 }
 
