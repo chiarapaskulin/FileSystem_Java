@@ -30,6 +30,9 @@ public class FileSystem {
 	/* data block */
 	static byte[] data_block = new byte[block_size]; //1 bloco local de tamanho 1024 bytes
 
+
+	//------------------------METODOS DE MANIPULACAO DE MEMORIA--------------------------------
+
 	/* reads a data block from disk */
 	public static byte[] readBlock(String file, int block) {
 		byte[] record = new byte[block_size];
@@ -151,6 +154,9 @@ public class FileSystem {
 		writeBlock("filesystem.dat", block, data_block);
 	}
 
+
+	//------------------------METODO DE INIT--------------------------------
+
 	//init - inicializar o sistema de arquivos com as estruturas de dados, semelhante a formatar o sistema de arquivos virtual
 	public static void init(){
 		/* inicializa a FAT com as 4 (indices 0,1,2,3) primeiras entradas 0x7ffe para a própria FAT */
@@ -183,7 +189,10 @@ public class FileSystem {
 		}
 	}
 
-	//devolve a primeira entrada vazia (0) da FAT
+
+	//------------------------METODOS GERAIS--------------------------------
+
+	//devolve a primeira entrada vazia (com valor 0) da FAT e -1 se estiver cheia
 	private static short first_free_FAT_entry(){
 		//i começa em 5 pois de 0 a 3 são os blocos da FAT e 4 é o bloco do root
 		for(int i=5; i<fat.length; i++){
@@ -194,6 +203,7 @@ public class FileSystem {
 		return -1;
 	}
 
+	//devolve a primeira entrada vazia (com valor 0) do diretorioe -1 se estiver cheio
 	private static short first_free_dir_entry(int blocoAtual){
 		for(int i=0; i<32; i++){
 			DirEntry entry = readDirEntry(blocoAtual, i);
@@ -209,6 +219,7 @@ public class FileSystem {
 		return -1;
 	}
 
+	//confere se uma entrada existe no blocoAtual passado por parametro
 	private static boolean does_entry_exists(int blocoAtual, String path){
 		//confere cada entrada de diretório do blocoAtual
 		for(int i=0; i<32; i++){
@@ -236,12 +247,16 @@ public class FileSystem {
 		return false;
 	}
 
+	//arredonda o double passado por parametro para cima
 	private static int roundUp(double num){
 		if ((num-(int)num) > 0.0 ){
 			num += 1;
 		}
 		return (int)num;
 	}
+
+
+	//------------------------METODOS DO LS--------------------------------
 
 	//ls [/caminho/diretorio] - listar diretorio
 	public static void ls(String path){
@@ -321,6 +336,9 @@ public class FileSystem {
 		}
 	}
 
+
+	//------------------------METODOS DO MKDIR--------------------------------
+
 	//mkdir [/caminho/diretorio] - criar diretorio
 	public static void mkdir(String path){
 		String[] arrOfStr = path.split("/");
@@ -339,7 +357,7 @@ public class FileSystem {
 		followUntilCreateDir(newPath,(short) 4);
 	}
 
-	//vai acessando os subdiretorios até o penultimo e chama accessAndCreate para criar o ultimo
+	//vai acessando os subdiretorios até o ultimo e chama accessAndCreateDir para criar o ultimo
 	private static void followUntilCreateDir(String[] path, short blocoAtual){
 		//se é o ultimo diretorio do path, o que tem que ser criado, acessa o blocoAtual (diretorio do que tem que ser criado) e cria o mesmo
 		if(path.length==1) accessAndCreateDir(path[0], blocoAtual);
@@ -443,6 +461,9 @@ public class FileSystem {
 		}
 	}
 
+
+	//------------------------METODOS DO CREATEARCHIVE--------------------------------
+
 	//create [/caminho/arquivo] - criar arquivo
 	public static void createArchive(String path, String content, int size){
 		String[] arrOfStr = path.split("/");
@@ -452,6 +473,7 @@ public class FileSystem {
 		followUntilCreateArchive(arrOfStr,(short) 4, content, size);
 	}
 
+	//vai acessando os subdiretorios até o penultimo e chama accessAndCreateArchive para criar o ultimo dentro do penultimo
 	private static void followUntilCreateArchive(String[] path, short blocoAtual, String content, int size){
 		//se [0] é o ultimo diretorio do path e [1] é o arquivo que tem que ser criado, acessa ele e cria o arquivo
 		if(path.length==2) accessAndCreateArchive(path, blocoAtual, content, size);
@@ -499,6 +521,7 @@ public class FileSystem {
 		}
 	}
 
+	//cria o diretorio descrito em path[1] dentro de path[0]
 	private static void accessAndCreateArchive(String[] path, short blocoAtual, String content, int size){
 		boolean found = false;
 
@@ -625,6 +648,9 @@ public class FileSystem {
 		}
 	}
 
+
+	//------------------------METODOS DO UNLINK--------------------------------
+
 	//unlink [/caminho/arquivo] - excluir arquivo ou diretorio (o diretorio precisa estar vazio)
 	public static void unlink(String path){
 		String[] arrOfStr = path.split("/");
@@ -633,10 +659,16 @@ public class FileSystem {
 		}
 	}
 
+
+	//------------------------METODOS DO ISDIREMPTY--------------------------------
+
 	//retorna se o Diretorio esta vazio
 	public static boolean isDirEmpty(String path){
 		return true;
 	}
+
+
+	//------------------------METODOS DO WRITE--------------------------------
 
 	//write "string" [/caminho/arquivo] - escrever dados em um arquivo (sobrescrever dados)
 	public static void write(String path){
@@ -646,6 +678,9 @@ public class FileSystem {
 		}
 	}
 
+
+	//------------------------METODOS DO APPEND--------------------------------
+
 	//append "string" [/caminho/arquivo] - anexar dados em um arquivo
 	public static void append(String path){
 		String[] arrOfStr = path.split("/");
@@ -654,6 +689,9 @@ public class FileSystem {
 		}
 	}
 
+
+	//------------------------METODOS DO READ--------------------------------
+
 	//read [/caminho/arquivo] - ler o conteudo de um arquivo
 	public static void read(String path){
 		String[] arrOfStr = path.split("/");
@@ -661,6 +699,9 @@ public class FileSystem {
 			System.out.println(a);
 		}
 	}
+
+
+	//------------------------MAIN--------------------------------
 
 	public static void main(String args[]) {
 		//init();
