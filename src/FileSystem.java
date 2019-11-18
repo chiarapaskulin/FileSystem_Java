@@ -743,49 +743,37 @@ public class FileSystem {
         boolean running = true;
 
         while(running) {
-            System.out.println("\nSelecione a opção desejada:");
-            System.out.println("1. Inicializar o sistema (formatar)");
-            System.out.println("2. Listar diretório");
-            System.out.println("3. Criar diretório");
-            System.out.println("4. Criar arquivo");
-            System.out.println("5. Excluir arquivo/diretório");
-            System.out.println("6. Sobrescrever arquivo");
-            System.out.println("7. Anexar dados a um arquivo");
-            System.out.println("8. Ler arquivo");
-            System.out.println("0. Sair");
-
-            int op = scan.nextInt();
+            System.out.println("\nDigite o comando desejado. Para sair, digite 'exit'");
+            // pega comando inteiro
+            String[] command = scan.nextLine().split(" ");
+            // separa comando
+            String op = command[0];
 
             switch (op) {
-                case 0:
+                case "exit":
                     System.out.println("Finalizando sistema");
                     running = false;
                     break;
 
-                case 1:
+                case "init":
                     init();
                     System.out.println("Inicialização concluída");
                     break;
 
-                case 2:
-                    System.out.println("Digite o caminho completo do diretório");
-                    String ls = scan.next();
-                    ls(ls);
+                case "ls":
+                    ls(command[1]);
                     break;
 
-                case 3:
-                    System.out.println("Digite o caminho completo do novo diretório");
-                    String mkdir = scan.next();
-                    mkdir(mkdir);
-                    System.out.println("Arquivo criado com sucesso");
+                case "mkdir":
+                    mkdir(command[1]);
                     break;
 
-                case 4:
+                case "create":
                     System.out.println("Digite o caminho completo do novo arquivo (incluindo o nome do arquivo)");
                     String archivePath = scan.next();
                     System.out.println("Digite o conteúdo do arquivo");
                     String archiveContent = scan.next();
-                    createArchive(archivePath, archiveContent, archiveContent.getBytes().length);
+                    createArchive(command[1], command[2], command[2].getBytes().length);
                     break;
 
                     default:
