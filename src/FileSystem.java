@@ -257,11 +257,19 @@ public class FileSystem {
         return dirName.toString();
     }
 
+    // verifica se é um arquivo de diretórios ou não
+    private static boolean isDirectory(DirEntry entry) {
+        if (entry.attributes == 2) {
+            return true;
+        }
+        else return false;
+    }
+
 
     //------------------------METODOS DO LS--------------------------------
 
     //ls [/caminho/diretorio] - listar diretorio
-    private static ArrayList<String> ls(String path) {
+    private static ArrayList<String> ls(String path){
         String[] arrOfStr = path.split("/");
         //passa o path completo
         //a primeira posicao do array é o diretorio ATUAL
@@ -270,11 +278,14 @@ public class FileSystem {
     }
 
     //vai acessando os subdiretorios até o ultimo e chama accessAndListDir para listar o ultimo diretorio
-    private static ArrayList<String> followUntilFindDir(String[] path, short blocoAtual) {
+    private static ArrayList<String> followUntilFindDir(String[] path, short blocoAtual){
+
         //se é o ultimo diretorio do path, acessa seu diretorio pai, acessa ele e lista ele
         if(path.length < 2) {
             return accessAndListDir(blocoAtual);
-        } else {
+        }
+
+        else {
 
             //nome do diretorio que eu estou procurando é pego no path[1], porque path[0] é o atual
             String arcName = path[1];
@@ -287,6 +298,7 @@ public class FileSystem {
                 //compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
                 if (dirName.equals(arcName)) {
                     //se achou a entrada de diretorio, entra nela e passa path sem o diretorio atual
+
 
                     String[] newPath = new String[path.length - 1];
                     int posicao = 0;
@@ -303,11 +315,14 @@ public class FileSystem {
 
             //printa que não achou o diretorio path[1], que é o que está sendo procurado no atual path[0]
             return new ArrayList<>();
+
         }
     }
 
     //lista o diretorio descrito em path que tem seu bloco como blocoAtual
     private static ArrayList<String> accessAndListDir(short blocoAtual) {
+
+
         DirEntry dir_entry;
 
         //adiciona cada entrada para um array de strings
@@ -315,6 +330,7 @@ public class FileSystem {
 
         for(int i=0; i<32; i++){
             dir_entry = readDirEntry(blocoAtual,i);
+
             //se a entrada de diretório nao esta vazia, printa seu nome
             if (dir_entry.attributes != 0) {
                 try {
@@ -329,7 +345,7 @@ public class FileSystem {
     //------------------------METODOS DO READ--------------------------------
 
     //read [/caminho/arquivo] - ler o conteudo de um arquivo
-    private static void readArchive(String path) {
+    private static void readArchive(String path){
         String[] arrOfStr = path.split("/");
         //passa o path completo
         //a primeira posicao do array é o diretorio ATUAL
@@ -349,7 +365,7 @@ public class FileSystem {
             String arcName = path[1];
 
             //confere cada entrada de diretório do blocoAtual
-            for (int i = 0; i < 32 && !found; i++) {
+            for (int i = 0; i < 32 && !found; i++){
                 DirEntry entry = readDirEntry(blocoAtual, i);
                 String dirName = getDirName(entry);
 
@@ -372,7 +388,7 @@ public class FileSystem {
             }
 
             //printa que não achou o diretorio path[1], que é o que está sendo procurado no atual path[0]
-            if(!found) {
+            if (!found) {
                 System.out.println("Não há nenhum arquivo chamado /" + path[1]);
             }
         }
@@ -566,7 +582,7 @@ public class FileSystem {
     //cria o diretorio descrito em path[1] dentro de path[0]
     private static void accessAndCreateArchive(String[] path, short blocoAtual, String content, int size) {
         if(doesEntryExists(blocoAtual, path[1])) {
-            System.out.println("O arquivo/entrada de diretório chamado '" + path[1] + "' já existe");
+            System.out.println("O arquivo/entrada de diretório chamado ''" + path[1] + "'' já existe");
             //se não tem nenhuma entrada de diretório com esse nome, cria o arquivo
         } else {
             //procura a primeira entrada de diretorio vazia para criar o arquivo
@@ -621,7 +637,7 @@ public class FileSystem {
 
                         //cria a entrada de diretorio com o arquivo para adicionar na entrada de diretorio do blocoAtual
                         DirEntry dir_entry = new DirEntry();
-                        String name = path[1];
+                        String name = path[1] + ".txt";
 
                         byte[] namebytes = name.getBytes();
                         System.arraycopy(namebytes, 0, dir_entry.filename, 0, namebytes.length);
@@ -662,7 +678,7 @@ public class FileSystem {
                         writeFat(fat);
                         //cria a entrada de diretorio com o arquivo para adicionar na entrada de diretorio do blocoAtual
                         DirEntry dir_entry = new DirEntry();
-                        String name = path[1];
+                        String name = path[1] + ".txt";
 
                         byte[] namebytes = name.getBytes();
                         System.arraycopy(namebytes, 0, dir_entry.filename, 0, namebytes.length);
@@ -699,7 +715,7 @@ public class FileSystem {
     //vai acessando os subdiretorios até o penultimo e chama accessAndCreateArchive para criar o ultimo dentro do penultimo
     private static void followUntilWriteArchive(String[] path, short blocoAtual, String content, int size) {
         //se [0] é o ultimo diretorio do path e [1] é o arquivo que tem que ser modificado, acessa ele e cria o arquivo
-        if(path.length < 3) {
+        if(path.length <= 2) {
             accessAndWriteArchive(path, content, size);
         } else {
             boolean found = false;
@@ -731,16 +747,14 @@ public class FileSystem {
             }
 
             //printa que não achou o diretorio path[1], que é o que está sendo procurado no atual path[0]
-            if(!found) {
-                System.out.println("Não há nenhum arquivo chamado /" + path[1]);
-            }
+            if (!found) System.out.println("Não há nenhum diretório chamado /" + path[1]);
         }
     }
 
     //cria o diretorio descrito em path[1] dentro de path[0]
     private static void accessAndWriteArchive(String[] path, String content, int size) {
         //procura a primeira entrada de diretorio vazia para criar o arquivo
-        int entradaDeDirVazia = firstFreeDirEntry((short) 4) - 1;
+        int entradaDeDirVazia = firstFreeDirEntry((short) 4);
 
         //se não achou uma entrada de diretorio vazia, avisa que ele esta cheio
         if(entradaDeDirVazia == -1) {
@@ -864,13 +878,18 @@ public class FileSystem {
     //------------------------METODOS DO UNLINK--------------------------------
 
     //unlink [/caminho/arquivo] - excluir arquivo ou diretorio (o diretorio precisa estar vazio)
-    public static void unlink(String path){
+    /*public static String unlink(String path){
+        if (ls(path).size() > 0) {
+            return "Diretório não está vazio";
+        }
+
+
         String[] arrOfStr = path.split("/");
         for (String a : arrOfStr) {
             System.out.println(a);
         }
     }
-
+*/
 
     //------------------------METODOS DO ISDIREMPTY--------------------------------
 
@@ -941,6 +960,7 @@ public class FileSystem {
             switch (op) {
                 case "exit":
                     System.out.println("Finalizando sistema");
+                    scan.close();
                     running = false;
                     break;
 
