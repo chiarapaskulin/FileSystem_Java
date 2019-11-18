@@ -740,7 +740,7 @@ public class FileSystem {
 
     public static void shell() {
         Scanner scan = new Scanner(System.in);
-        Boolean running = true;
+        boolean running = true;
 
         while(running) {
             System.out.println("\nSelecione a opção desejada:");
