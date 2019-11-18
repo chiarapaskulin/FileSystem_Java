@@ -261,35 +261,33 @@ public class FileSystem {
     //------------------------METODOS DO LS--------------------------------
 
     //ls [/caminho/diretorio] - listar diretorio
-    private static void ls(String path){
+    private static ArrayList<String> ls(String path){
         String[] arrOfStr = path.split("/");
         //passa o path completo
         //a primeira posicao do array é o diretorio ATUAL
         //o blocoAtual é o número do bloco do diretorio ATUAL
-        followUntilFindDir(arrOfStr,(short) 4);
+        return followUntilFindDir(arrOfStr,(short) 4);
     }
 
     //vai acessando os subdiretorios até o ultimo e chama accessAndListDir para listar o ultimo diretorio
-    private static void followUntilFindDir(String[] path, short blocoAtual){
+    private static ArrayList<String> followUntilFindDir(String[] path, short blocoAtual){
         //se é o ultimo diretorio do path, acessa seu diretorio pai, acessa ele e lista ele
         if(path.length <= 1) {
-            accessAndListDir(path[0], blocoAtual);
+            return accessAndListDir(blocoAtual);
         }
         else {
-            boolean found = false;
 
             //nome do diretorio que eu estou procurando é pego no path[1], porque path[0] é o atual
             String arcName = path[1];
 
             //confere cada entrada de diretório do blocoAtual
-            for (int i = 0; i < 32 && !found; i++){
+            for (int i = 0; i < 32; i++){
                 DirEntry entry = readDirEntry(blocoAtual, i);
                 String dirName = getDirName(entry);
 
                 //compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
                 if (dirName.equals(arcName)) {
                     //se achou a entrada de diretorio, entra nela e passa path sem o diretorio atual
-                    found = true;
 
                     String[] newPath = new String[path.length - 1];
                     int posicao = 0;
@@ -300,36 +298,35 @@ public class FileSystem {
 
                     //chama o metodo recursivamente com path[0], que agora é o diretorio que vamos entrar
                     //e com entry.first_bloc, que é o numero do bloco desse diretorio
-                    followUntilFindDir(newPath, entry.first_block);
+                    return followUntilFindDir(newPath, entry.first_block);
                 }
             }
 
             //printa que não achou o diretorio path[1], que é o que está sendo procurado no atual path[0]
-            if (!found) {
-                System.out.println("Não há nenhum diretório chamado /" + path[1]);
-            }
+            return new ArrayList<>();
+
         }
     }
 
     //lista o diretorio descrito em path que tem seu bloco como blocoAtual
-    private static void accessAndListDir(String path, short blocoAtual){
-        //nome do diretorio atual de blocoAtual
-        byte[] file = path.getBytes();
+    private static ArrayList<String> accessAndListDir(short blocoAtual){
+
 
         DirEntry dir_entry;
 
-        //printa cada entrada de diretório do blocoAtual que não seja vazia
+        //adiciona cada entrada para um array de strings
+        ArrayList<String> files = new ArrayList<>();
+
         for(int i=0; i<32; i++){
             dir_entry = readDirEntry(blocoAtual,i);
             //se a entrada de diretório nao esta vazia, printa seu nome
             if (dir_entry.attributes != 0) {
-                String s = "";
                 try {
-                    s = new String(dir_entry.filename, StandardCharsets.UTF_8);
-                } catch (Exception ignored){};
-                System.out.println(s);
+                    files.add(new String(dir_entry.filename, StandardCharsets.UTF_8));
+                } catch (Exception ignored){}
             }
         }
+        return files;
     }
 
 
@@ -958,7 +955,8 @@ public class FileSystem {
                     if(command.length == 1) {
                         System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
                     } else {
-                        ls(command[1]);
+                        for (String file:ls(command[1]))
+                        System.out.println(file);
                     }
                     break;
 
