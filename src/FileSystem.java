@@ -153,7 +153,7 @@ public class FileSystem {
     //------------------------METODO DE INIT--------------------------------
 
     //init - inicializar o sistema de arquivos com as estruturas de dados, semelhante a formatar o sistema de arquivos virtual
-    private static void init(){
+    private static void init() {
         /* inicializa a FAT com as 4 (indices 0,1,2,3) primeiras entradas 0x7ffe para a própria FAT */
         for (int i = 0; i < FAT_BLOCKS; i++) {
             fat[i] = FAT;
@@ -188,7 +188,7 @@ public class FileSystem {
     //------------------------METODOS GERAIS--------------------------------
 
     //devolve a primeira entrada vazia (com valor 0) da FAT e -1 se estiver cheia
-    private static short firstFreeFATEntry(){
+    private static short firstFreeFATEntry() {
         //i começa em 5 pois de 0 a 3 são os blocos da FAT e 4 é o bloco do root
         for(int i=5; i<fat.length; i++){
             if(fat[i] == 0) return (short) i;
@@ -199,7 +199,7 @@ public class FileSystem {
     }
 
     //devolve a primeira entrada vazia (com valor 0) do diretorioe -1 se estiver cheio
-    private static short firstFreeDirEntry(int blocoAtual){
+    private static short firstFreeDirEntry(int blocoAtual) {
         for(int i=0; i<32; i++){
             DirEntry entry = readDirEntry(blocoAtual, i);
 
@@ -215,7 +215,7 @@ public class FileSystem {
     }
 
     //confere se uma entrada existe no blocoAtual passado por parametro
-    private static boolean doesEntryExists(int blocoAtual, String path){
+    private static boolean doesEntryExists(int blocoAtual, String path) {
         //confere cada entrada de diretório do blocoAtual
         for(int i = 0; i < 32; i++){
             DirEntry entry = readDirEntry(blocoAtual, i);
@@ -309,7 +309,7 @@ public class FileSystem {
     }
 
     //lista o diretorio descrito em path que tem seu bloco como blocoAtual
-    private static ArrayList<String> accessAndListDir(short blocoAtual){
+    private static ArrayList<String> accessAndListDir(short blocoAtual) {
 
 
         DirEntry dir_entry;
@@ -338,11 +338,11 @@ public class FileSystem {
         //passa o path completo
         //a primeira posicao do array é o diretorio ATUAL
         //o blocoAtual é o número do bloco do diretorio ATUAL
-        followUntilFindArchive(arrOfStr,(short) 4);
+        followUntilFindArchive(arrOfStr, (short) 4);
     }
 
     //vai acessando os subdiretorios até o ultimo e chama accessAndListDir para listar o ultimo diretorio
-    private static void followUntilFindArchive(String[] path, short blocoAtual){
+    private static void followUntilFindArchive(String[] path, short blocoAtual) {
         //se é o ultimo diretorio do path, acessa seu diretorio pai, acessa ele e lista ele
         if(path.length <= 1) {
             accessAndReadArchive(path[0], blocoAtual);
@@ -520,18 +520,18 @@ public class FileSystem {
     //------------------------METODOS DO CREATEARCHIVE--------------------------------
 
     //create [/caminho/arquivo] - criar arquivo
-    private static void createArchive(String path, String content, int size){
+    private static void createArchive(String path, String content, int size) {
         String[] arrOfStr = path.split("/");
         //passa o path completo
         //a primeira posicao do array é o diretorio ATUAL
         //o blocoAtual é o número do bloco do diretorio ATUAL
-        followUntilCreateArchive(arrOfStr,(short) 4, content, size);
+        followUntilCreateArchive(arrOfStr, (short) 4, content, size);
     }
 
     //vai acessando os subdiretorios até o penultimo e chama accessAndCreateArchive para criar o ultimo dentro do penultimo
-    private static void followUntilCreateArchive(String[] path, short blocoAtual, String content, int size){
+    private static void followUntilCreateArchive(String[] path, short blocoAtual, String content, int size) {
         //se [0] é o ultimo diretorio do path e [1] é o arquivo que tem que ser criado, acessa ele e cria o arquivo
-        if(path.length <= 2) {
+        if(path.length < 3) {
             accessAndCreateArchive(path, blocoAtual, content, size);
         } else {
             boolean found = false;
@@ -569,7 +569,7 @@ public class FileSystem {
 
     //cria o diretorio descrito em path[1] dentro de path[0]
     private static void accessAndCreateArchive(String[] path, short blocoAtual, String content, int size) {
-        if(doesEntryExists(blocoAtual,path[1])) {
+        if(doesEntryExists(blocoAtual, path[1])) {
             System.out.println("O arquivo/entrada de diretório chamado ''" + path[1] + "'' já existe");
             //se não tem nenhuma entrada de diretório com esse nome, cria o arquivo
         } else {
@@ -584,6 +584,7 @@ public class FileSystem {
             } else {
                 //procura a primeira entrada livre da FAT
                 short firstblock = firstFreeFATEntry();
+
                 //return 0 significa que a FAT está cheia, então para de processar
                 if(firstblock == -1) {
                     System.out.println("A FAT está cheia");
@@ -663,7 +664,6 @@ public class FileSystem {
 
                         //atualiza a FAT no arquivo .dat
                         writeFat(fat);
-
                         //cria a entrada de diretorio com o arquivo para adicionar na entrada de diretorio do blocoAtual
                         DirEntry dir_entry = new DirEntry();
                         String name = path[1] + ".txt";
@@ -695,7 +695,7 @@ public class FileSystem {
     //------------------------METODOS DO WRITE--------------------------------
 
     //write "string" [/caminho/arquivo] - escrever dados em um arquivo (sobrescrever dados)
-    public static void writeArchive(String path, String content, int size) {
+    private static void writeArchive(String path, String content, int size) {
         String[] arrOfStr = path.split("/");
         followUntilWriteArchive(arrOfStr,(short) 4, content, size);
     }
