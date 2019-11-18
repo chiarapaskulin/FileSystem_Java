@@ -769,10 +769,6 @@ public class FileSystem {
                     break;
 
                 case "create":
-                    System.out.println("Digite o caminho completo do novo arquivo (incluindo o nome do arquivo)");
-                    String archivePath = scan.next();
-                    System.out.println("Digite o conteúdo do arquivo");
-                    String archiveContent = scan.next();
                     createArchive(command[1], command[2], command[2].getBytes().length);
                     break;
 
