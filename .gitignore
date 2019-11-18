@@ -71,6 +71,6 @@ fabric.properties
 *.env
 
 # idea directory
-.idea/
+.idea
 
 
