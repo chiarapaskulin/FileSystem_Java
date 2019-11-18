@@ -19,12 +19,8 @@ public class FileSystem {
 
     private static final int FAT = 0x7ffe;
     private static final int FIM_DE_ARQUIVO = 0x7fff;
-    private static final int TIPO_ARQUIVO = 0x01;
-
-	/*
-	0x0000 -> cluster livre
-	0x0001 - 0x7ffd -> arquivo (ponteiro p/ proximo bloco)
-	*/
+    private static final int ARQUIVO = 0x01;
+    private static final int DIRETORIO = 0x02;
 
     /* FAT data structure */
     private static short[] fat = new short[BLOCKS]; //2048 representacoes de bloco de 2 bytes cada = 4096 bytes = 4 blocos
@@ -279,7 +275,7 @@ public class FileSystem {
         if(path.length <= 1) {
             accessAndListDir(path[0], blocoAtual);
         }
-        else{
+        else {
             boolean found = false;
 
             //nome do diretorio que eu estou procurando é pego no path[1], porque path[0] é o atual
@@ -309,7 +305,9 @@ public class FileSystem {
             }
 
             //printa que não achou o diretorio path[1], que é o que está sendo procurado no atual path[0]
-            if (!found) System.out.println("Não há nenhum diretório chamado /" + path[1]);
+            if (!found) {
+                System.out.println("Não há nenhum diretório chamado /" + path[1]);
+            }
         }
     }
 
@@ -322,6 +320,79 @@ public class FileSystem {
 
         //printa cada entrada de diretório do blocoAtual que não seja vazia
         for(int i=0; i<32; i++){
+            dir_entry = readDirEntry(blocoAtual,i);
+            //se a entrada de diretório nao esta vazia, printa seu nome
+            if (dir_entry.attributes != 0) {
+                String s = "";
+                try {
+                    s = new String(dir_entry.filename, StandardCharsets.UTF_8);
+                } catch (Exception ignored){};
+                System.out.println(s);
+            }
+        }
+    }
+
+
+    //------------------------METODOS DO READ--------------------------------
+
+    //read [/caminho/arquivo] - ler o conteudo de um arquivo
+    private static void readArchive(String path){
+        String[] arrOfStr = path.split("/");
+        //passa o path completo
+        //a primeira posicao do array é o diretorio ATUAL
+        //o blocoAtual é o número do bloco do diretorio ATUAL
+        followUntilFindArchive(arrOfStr,(short) 4);
+    }
+
+    //vai acessando os subdiretorios até o ultimo e chama accessAndListDir para listar o ultimo diretorio
+    private static void followUntilFindArchive(String[] path, short blocoAtual){
+        //se é o ultimo diretorio do path, acessa seu diretorio pai, acessa ele e lista ele
+        if(path.length <= 1) {
+            accessAndReadArchive(path[0], blocoAtual);
+        } else {
+            boolean found = false;
+
+            //nome do diretorio que eu estou procurando é pego no path[1], porque path[0] é o atual
+            String arcName = path[1];
+
+            //confere cada entrada de diretório do blocoAtual
+            for (int i = 0; i < 32 && !found; i++){
+                DirEntry entry = readDirEntry(blocoAtual, i);
+                String dirName = getDirName(entry);
+
+                //compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+                if (dirName.equals(arcName)) {
+                    //se achou a entrada de diretorio, entra nela e passa path sem o diretorio atual
+                    found = true;
+
+                    String[] newPath = new String[path.length - 1];
+                    int posicao = 0;
+                    for (int k = 1; k < path.length; k++) {
+                        newPath[posicao] = path[k];
+                        posicao++;
+                    }
+
+                    //chama o metodo recursivamente com path[0], que agora é o diretorio que vamos entrar
+                    //e com entry.first_bloc, que é o numero do bloco desse diretorio
+                    followUntilFindArchive(newPath, entry.first_block);
+                }
+            }
+
+            //printa que não achou o diretorio path[1], que é o que está sendo procurado no atual path[0]
+            if (!found) {
+                System.out.println("Não há nenhum arquivo chamado /" + path[1]);
+            }
+        }
+    }
+
+    //lista o diretorio descrito em path que tem seu bloco como blocoAtual
+    private static void accessAndReadArchive(String path, short blocoAtual){
+        //nome do diretorio atual de blocoAtual
+        byte[] file = path.getBytes();
+
+        DirEntry dir_entry;
+
+        for(int i = 0; i < 32; i++){
             dir_entry = readDirEntry(blocoAtual,i);
             //se a entrada de diretório nao esta vazia, printa seu nome
             if (dir_entry.attributes != 0) {
@@ -429,7 +500,7 @@ public class FileSystem {
                     System.arraycopy(namebytes, 0, dir_entry.filename, 0, namebytes.length);
 
                     //define informacoes da entrada de diretorio
-                    dir_entry.attributes = 0x02;
+                    dir_entry.attributes = DIRETORIO;
                     dir_entry.first_block = firstblock;
                     dir_entry.size = 0;
                     //escreve a entrada de diretorio criada na entrada de diretorio i do blocoAtual
@@ -556,12 +627,13 @@ public class FileSystem {
 
                         //cria a entrada de diretorio com o arquivo para adicionar na entrada de diretorio do blocoAtual
                         DirEntry dir_entry = new DirEntry();
-                        String name = path[1];
+                        String name = path[1] + ".txt";
+
                         byte[] namebytes = name.getBytes();
                         System.arraycopy(namebytes, 0, dir_entry.filename, 0, namebytes.length);
 
                         //define informacoes da entrada de diretorio
-                        dir_entry.attributes = TIPO_ARQUIVO;
+                        dir_entry.attributes = ARQUIVO;
                         dir_entry.first_block = firstblock;
                         dir_entry.size = size;
 
@@ -597,12 +669,13 @@ public class FileSystem {
 
                         //cria a entrada de diretorio com o arquivo para adicionar na entrada de diretorio do blocoAtual
                         DirEntry dir_entry = new DirEntry();
-                        String name = path[1];
+                        String name = path[1] + ".txt";
+
                         byte[] namebytes = name.getBytes();
                         System.arraycopy(namebytes, 0, dir_entry.filename, 0, namebytes.length);
 
                         //define informacoes da entrada de diretorio
-                        dir_entry.attributes = TIPO_ARQUIVO;
+                        dir_entry.attributes = ARQUIVO;
                         dir_entry.first_block = firstblock;
                         dir_entry.size = size;
 
@@ -724,13 +797,14 @@ public class FileSystem {
                     //cria a entrada de diretorio com o arquivo para adicionar na entrada de diretorio do blocoAtual
                     DirEntry dir_entry = new DirEntry();
                     String name = path[1];
+
                     byte[] namebytes = name.getBytes();
                     for (int j = 0; j < namebytes.length; j++) {
                         dir_entry.filename[j] = namebytes[j];
                     }
 
                     //define informacoes da entrada de diretorio
-                    dir_entry.attributes = TIPO_ARQUIVO;
+                    dir_entry.attributes = ARQUIVO;
                     dir_entry.first_block = firstblock;
                     dir_entry.size = size;
 
@@ -766,11 +840,12 @@ public class FileSystem {
                     //cria a entrada de diretorio com o arquivo para adicionar na entrada de diretorio do blocoAtual
                     DirEntry dir_entry = new DirEntry();
                     String name = path[1];
+
                     byte[] namebytes = name.getBytes();
                     System.arraycopy(namebytes, 0, dir_entry.filename, 0, namebytes.length);
 
                     //define informacoes da entrada de diretorio
-                    dir_entry.attributes = TIPO_ARQUIVO;
+                    dir_entry.attributes = ARQUIVO;
                     dir_entry.first_block = firstblock;
                     dir_entry.size = size;
 
@@ -814,17 +889,6 @@ public class FileSystem {
 
     //append "string" [/caminho/arquivo] - anexar dados em um arquivo
     public static void append(String path){
-        String[] arrOfStr = path.split("/");
-        for (String a : arrOfStr) {
-            System.out.println(a);
-        }
-    }
-
-
-    //------------------------METODOS DO READ--------------------------------
-
-    //read [/caminho/arquivo] - ler o conteudo de um arquivo
-    public static void read(String path){
         String[] arrOfStr = path.split("/");
         for (String a : arrOfStr) {
             System.out.println(a);
@@ -895,6 +959,14 @@ public class FileSystem {
                         System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
                     } else {
                         ls(command[1]);
+                    }
+                    break;
+
+                case "read":
+                    if(command.length == 1) {
+                        System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
+                    } else {
+                        readArchive(command[1]);
                     }
                     break;
 
