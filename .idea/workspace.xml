@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83e7c231-3aed-4d48-94a8-afcfcd116ef5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/filesystem.dat" beforeDir="false" afterPath="$PROJECT_DIR$/filesystem.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/FileSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FileSystem.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,11 +16,16 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="81" column="32" lean-forward="true" selection-start-line="81" selection-start-column="32" selection-end-line="81" selection-end-column="32" />
+            <state relative-caret-position="-250">
+              <caret line="990" column="21" lean-forward="true" selection-start-line="990" selection-start-column="21" selection-end-line="990" selection-end-column="21" />
               <folding>
+                <element signature="e#1185#1655#0" />
+                <element signature="e#1661#2075#0" />
+                <element signature="e#2081#2575#0" />
+                <element signature="e#2581#3013#0" />
                 <element signature="e#3019#3815#0" />
                 <element signature="e#3821#5093#0" />
+                <element signature="e#5178#6698#0" />
                 <element signature="e#6783#7199#0" />
                 <element signature="e#7205#7787#0" />
                 <element signature="e#7793#8507#0" />
@@ -43,7 +49,6 @@
                 <element signature="e#29928#31878#0" />
                 <element signature="e#31884#38001#0" />
                 <element signature="e#38751#38992#0" />
-                <element signature="e#40156#42349#0" />
               </folding>
             </state>
           </provider>
@@ -51,7 +56,11 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/filesystem.dat">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="2097152" selection-start-column="2097152" selection-end-column="2097152" />
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -112,7 +121,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574199494299" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574201194403" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -167,18 +176,18 @@
       <workItem from="1574026034722" duration="6129000" />
       <workItem from="1574195991655" duration="418000" />
       <workItem from="1574196433929" duration="2040000" />
-      <workItem from="1574198512548" duration="949000" />
+      <workItem from="1574198512548" duration="2676000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48843000" />
+    <option name="totallyTimeSpent" value="50570000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4991119" visible="true" weight="0.29068825" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4991119" visible="true" weight="0.29068825" />
       <window_info id="Capture Tool" order="1" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -351,15 +360,24 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/filesystem.dat">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="2097152" selection-start-column="2097152" selection-end-column="2097152" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="81" column="32" lean-forward="true" selection-start-line="81" selection-start-column="32" selection-end-line="81" selection-end-column="32" />
+        <state relative-caret-position="-250">
+          <caret line="990" column="21" lean-forward="true" selection-start-line="990" selection-start-column="21" selection-end-line="990" selection-end-column="21" />
           <folding>
+            <element signature="e#1185#1655#0" />
+            <element signature="e#1661#2075#0" />
+            <element signature="e#2081#2575#0" />
+            <element signature="e#2581#3013#0" />
             <element signature="e#3019#3815#0" />
             <element signature="e#3821#5093#0" />
+            <element signature="e#5178#6698#0" />
             <element signature="e#6783#7199#0" />
             <element signature="e#7205#7787#0" />
             <element signature="e#7793#8507#0" />
@@ -383,7 +401,6 @@
             <element signature="e#29928#31878#0" />
             <element signature="e#31884#38001#0" />
             <element signature="e#38751#38992#0" />
-            <element signature="e#40156#42349#0" />
           </folding>
         </state>
       </provider>

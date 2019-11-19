@@ -970,16 +970,24 @@ public class FileSystem {
                     if(command.length == 1) {
                         System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
                     } else {
-                        for (String file:ls(command[1]))
-                        System.out.println(file);
+                        String[] caminho = command[1].split("/");
+                        if(!caminho[0].equalsIgnoreCase("root")) System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
+                        else{
+                            for (String file:ls(command[1])) {
+                                System.out.println(file);
+                            }
+                        }
                     }
                     break;
 
                 case "read":
                     if(command.length == 1) {
                         System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
-                    } else {
-                        readArchive(command[1]);
+                    } else {String[] caminho = command[1].split("/");
+                        if(!caminho[0].equalsIgnoreCase("root")) System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
+                        else{
+                            readArchive(command[1]);
+                        }
                     }
                     break;
 
@@ -987,16 +995,28 @@ public class FileSystem {
                     if(command.length == 1) {
                         System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
                     } else {
-                        mkdir(command[1]);
+                        String[] caminho = command[1].split("/");
+                        if(!caminho[0].equalsIgnoreCase("root")) System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
+                        else{
+                            mkdir(command[1]);
+                        }
                     }
                     break;
 
                 case "create":
-                    createArchive(command[1], command[2], command[2].getBytes().length);
+                    String[] caminho = command[1].split("/");
+                    if(!caminho[0].equalsIgnoreCase("root")) System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
+                    else{
+                        createArchive(command[1], command[2], command[2].getBytes().length);
+                    }
                     break;
 
                 case "write":
-                    writeArchive(command[1], command[2], command[2].getBytes().length);
+                    caminho = command[1].split("/");
+                    if(!caminho[0].equalsIgnoreCase("root")) System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
+                    else{
+                        writeArchive(command[1], command[2], command[2].getBytes().length);
+                    }
                     break;
 
                 default:
