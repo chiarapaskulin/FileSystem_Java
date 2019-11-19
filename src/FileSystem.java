@@ -34,7 +34,7 @@ public class FileSystem {
     private static byte[] readBlock(int block) {
         byte[] record = new byte[BLOCK_SIZE];
         try {
-            RandomAccessFile fileStore = new RandomAccessFile("../filesystem.dat", "rw");
+            RandomAccessFile fileStore = new RandomAccessFile("filesystem.dat", "rw");
             fileStore.seek(block * BLOCK_SIZE);
             fileStore.read(record, 0, BLOCK_SIZE);
             fileStore.close();
@@ -48,7 +48,7 @@ public class FileSystem {
     /* writes a data block to disk */
     private static void writeBlock(int block, byte[] record) {
         try {
-            RandomAccessFile fileStore = new RandomAccessFile("../filesystem.dat", "rw");
+            RandomAccessFile fileStore = new RandomAccessFile("filesystem.dat", "rw");
             fileStore.seek(block * BLOCK_SIZE);
             fileStore.write(record, 0, BLOCK_SIZE);
             fileStore.close();
@@ -61,7 +61,7 @@ public class FileSystem {
     private static short[] readFat() {
         short[] record = new short[BLOCKS];
         try {
-            RandomAccessFile fileStore = new RandomAccessFile("../filesystem.dat", "rw");
+            RandomAccessFile fileStore = new RandomAccessFile("filesystem.dat", "rw");
             fileStore.seek(0);
             for (int i = 0; i < BLOCKS; i++) {
                 record[i] = fileStore.readShort();
@@ -77,7 +77,7 @@ public class FileSystem {
     /* writes the FAT to disk */
     private static void writeFat(short[] fat) {
         try {
-            RandomAccessFile fileStore = new RandomAccessFile("../filesystem.dat", "rw");
+            RandomAccessFile fileStore = new RandomAccessFile("filesystem.dat", "rw");
             fileStore.seek(0);
             for (int i = 0; i < BLOCKS; i++) {
                 fileStore.writeShort(fat[i]);
@@ -939,13 +939,13 @@ public class FileSystem {
         ArrayList<Short> blocksToDelete = new ArrayList<>();
 
         // funçao que adiciona no array os blocos a serem deletados
-        findAllBlocks(blocoAtual, blocksToDelete);
+        ArrayList<Short> toDelete = findAllBlocks(blocoAtual, blocksToDelete);
 
         // copia da fat
         short[] fatCopy = readFat();
 
         // coloca cada bloco da fat como zero
-        for (Short block:blocksToDelete) {
+        for (Short block:toDelete) {
             fatCopy[block] = 0;
         }
 
@@ -954,9 +954,10 @@ public class FileSystem {
     }
 
     private static ArrayList<Short> findAllBlocks(short blocoAtual, ArrayList<Short> blocks) {
+        short[] copyFat = readFat();
 
         // se for fim de arquivo, volta o bloco atual
-        if (fat[blocoAtual] == 32767) {
+        if (copyFat[blocoAtual] == 32767) {
             blocks.add(blocoAtual);
 
             return blocks;
