@@ -29,7 +29,7 @@ public class FileSystem {
     private static byte[] readBlock(int block) {
         byte[] record = new byte[BLOCK_SIZE];
         try {
-            RandomAccessFile fileStore = new RandomAccessFile("../filesystem.dat", "rw");
+            RandomAccessFile fileStore = new RandomAccessFile("filesystem.dat", "rw");
             fileStore.seek(block * BLOCK_SIZE);
             fileStore.read(record, 0, BLOCK_SIZE);
             fileStore.close();
@@ -43,7 +43,7 @@ public class FileSystem {
     /* writes a data block to disk */
     private static void writeBlock(int block, byte[] record) {
         try {
-            RandomAccessFile fileStore = new RandomAccessFile("../filesystem.dat", "rw");
+            RandomAccessFile fileStore = new RandomAccessFile("filesystem.dat", "rw");
             fileStore.seek(block * BLOCK_SIZE);
             fileStore.write(record, 0, BLOCK_SIZE);
             fileStore.close();
@@ -72,7 +72,7 @@ public class FileSystem {
     /* writes the FAT to disk */
     private static void writeFat(short[] fat) {
         try {
-            RandomAccessFile fileStore = new RandomAccessFile("../filesystem.dat", "rw");
+            RandomAccessFile fileStore = new RandomAccessFile("filesystem.dat", "rw");
             fileStore.seek(0);
             for (int i = 0; i < BLOCKS; i++) {
                 fileStore.writeShort(fat[i]);
