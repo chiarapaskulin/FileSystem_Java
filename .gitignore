@@ -70,15 +70,7 @@ fabric.properties
 # Environment variables
 *.env
 
-# VS Code
-.vscode
+# idea directory
+.idea
 
-# node_modules
-node_modules
 
-# Private
-*.cert
-*.macaroon
-
-# Deploy build
-deploy.tar
