@@ -149,14 +149,6 @@ public class FileSystem {
 
     //init - inicializar o sistema de arquivos com as estruturas de dados, semelhante a formatar o sistema de arquivos virtual
     private static void init() {
-        File f = new File("filesystem.dat");
-        if(f.isFile()) f.delete();
-
-        try {
-            FileWriter arq = new FileWriter("filesystem.dat");
-            arq.close();
-        }catch (Exception e){}
-
         /* inicializa a FAT com as 4 (indices 0,1,2,3) primeiras entradas 0x7ffe para a própria FAT */
         for (int i = 0; i < FAT_BLOCKS; i++) {
             fat[i] = FAT;
@@ -918,8 +910,8 @@ public class FileSystem {
     public static void main(String[] args) {
         //init();
 
-        File f = new File("filesystem.dat");
-        if(f.length()!=0) fat = readFat();
+        //File f = new File();
+        fat = readFat();
         shell();
 
         /*System.out.println("LS EM ROOT: ");

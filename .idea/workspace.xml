@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83e7c231-3aed-4d48-94a8-afcfcd116ef5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/filesystem.dat" beforeDir="false" afterPath="$PROJECT_DIR$/filesystem.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/filesystem.dat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/FileSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FileSystem.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -12,43 +13,52 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
-              <caret line="922" column="16" lean-forward="true" selection-start-line="922" selection-start-column="16" selection-end-line="922" selection-end-column="16" />
+            <state relative-caret-position="160">
+              <caret line="61" selection-start-line="61" selection-end-line="61" />
               <folding>
-                <element signature="e#1368#1838#0" />
-                <element signature="e#1844#2258#0" />
-                <element signature="e#2767#3199#0" />
-                <element signature="e#3205#4001#0" />
-                <element signature="e#4007#5279#0" />
-                <element signature="e#6754#7170#0" />
-                <element signature="e#7176#7758#0" />
-                <element signature="e#7764#8478#0" />
-                <element signature="e#8484#8680#0" />
-                <element signature="e#8686#9235#0" />
-                <element signature="e#9241#9451#0" />
-                <element signature="e#9535#9891#0" />
-                <element signature="e#9897#11642#0" />
-                <element signature="e#11648#12344#0" />
-                <element signature="e#12430#12792#0" />
-                <element signature="e#12798#14689#0" />
-                <element signature="e#14695#15414#0" />
-                <element signature="e#15501#16120#0" />
-                <element signature="e#16126#17738#0" />
-                <element signature="e#17744#20330#0" />
-                <element signature="e#20425#20820#0" />
-                <element signature="e#20826#22787#0" />
-                <element signature="e#22793#29522#0" />
-                <element signature="e#29609#29893#0" />
-                <element signature="e#29899#31849#0" />
-                <element signature="e#31855#37972#0" />
-                <element signature="e#38655#38656#0" expanded="true" />
-                <element signature="e#38682#38683#0" expanded="true" />
-                <element signature="e#38722#38963#0" />
+                <element signature="e#1185#1655#0" />
+                <element signature="e#1661#2075#0" />
+                <element signature="e#2581#3013#0" />
+                <element signature="e#3019#3815#0" />
+                <element signature="e#3821#5093#0" />
+                <element signature="e#6783#7199#0" />
+                <element signature="e#7205#7787#0" />
+                <element signature="e#7793#8507#0" />
+                <element signature="e#8513#8709#0" />
+                <element signature="e#8715#9264#0" />
+                <element signature="e#9270#9480#0" />
+                <element signature="e#9564#9920#0" />
+                <element signature="e#9926#11671#0" />
+                <element signature="e#11677#12373#0" />
+                <element signature="e#12459#12821#0" />
+                <element signature="e#12827#14718#0" />
+                <element signature="e#14724#15443#0" />
+                <element signature="e#15530#16149#0" />
+                <element signature="e#16155#17767#0" />
+                <element signature="e#16886#17659#1" />
+                <element signature="e#17773#20359#0" />
+                <element signature="e#20454#20849#0" />
+                <element signature="e#20855#22816#0" />
+                <element signature="e#22822#29551#0" />
+                <element signature="e#29638#29922#0" />
+                <element signature="e#29928#31878#0" />
+                <element signature="e#31884#38001#0" />
+                <element signature="e#38751#38992#0" />
+                <element signature="e#40156#42349#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/io/RandomAccessFile.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="117">
+              <caret line="716" column="37" lean-forward="true" selection-start-line="716" selection-start-column="37" selection-end-line="716" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -110,7 +120,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574198002207" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574198843436" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -164,18 +174,19 @@
       <workItem from="1573764720388" duration="32341000" />
       <workItem from="1574026034722" duration="6129000" />
       <workItem from="1574195991655" duration="418000" />
-      <workItem from="1574196433929" duration="1514000" />
+      <workItem from="1574196433929" duration="2040000" />
+      <workItem from="1574198512548" duration="651000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47368000" />
+    <option name="totallyTimeSpent" value="48545000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4991119" visible="true" weight="0.28582996" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4991119" visible="true" weight="0.29068825" />
       <window_info id="Capture Tool" order="1" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -184,14 +195,14 @@
       <window_info id="Structure" order="6" sideWeight="0.5008881" weight="0.26639676" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3285968" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.37477797" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3250444" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.5381883" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.8419183" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3143872" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.3285968" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.3285968" />
@@ -292,13 +303,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/io/RandomAccessFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="71">
-          <caret line="123" selection-start-line="123" selection-end-line="123" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/lang/Object.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="71">
@@ -339,43 +343,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/filesystem.dat">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/io/RandomAccessFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="716" column="37" lean-forward="true" selection-start-line="716" selection-start-column="37" selection-end-line="716" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="922" column="16" lean-forward="true" selection-start-line="922" selection-start-column="16" selection-end-line="922" selection-end-column="16" />
+        <state relative-caret-position="160">
+          <caret line="61" selection-start-line="61" selection-end-line="61" />
           <folding>
-            <element signature="e#1368#1838#0" />
-            <element signature="e#1844#2258#0" />
-            <element signature="e#2767#3199#0" />
-            <element signature="e#3205#4001#0" />
-            <element signature="e#4007#5279#0" />
-            <element signature="e#6754#7170#0" />
-            <element signature="e#7176#7758#0" />
-            <element signature="e#7764#8478#0" />
-            <element signature="e#8484#8680#0" />
-            <element signature="e#8686#9235#0" />
-            <element signature="e#9241#9451#0" />
-            <element signature="e#9535#9891#0" />
-            <element signature="e#9897#11642#0" />
-            <element signature="e#11648#12344#0" />
-            <element signature="e#12430#12792#0" />
-            <element signature="e#12798#14689#0" />
-            <element signature="e#14695#15414#0" />
-            <element signature="e#15501#16120#0" />
-            <element signature="e#16126#17738#0" />
-            <element signature="e#17744#20330#0" />
-            <element signature="e#20425#20820#0" />
-            <element signature="e#20826#22787#0" />
-            <element signature="e#22793#29522#0" />
-            <element signature="e#29609#29893#0" />
-            <element signature="e#29899#31849#0" />
-            <element signature="e#31855#37972#0" />
-            <element signature="e#38655#38656#0" expanded="true" />
-            <element signature="e#38682#38683#0" expanded="true" />
-            <element signature="e#38722#38963#0" />
+            <element signature="e#1185#1655#0" />
+            <element signature="e#1661#2075#0" />
+            <element signature="e#2581#3013#0" />
+            <element signature="e#3019#3815#0" />
+            <element signature="e#3821#5093#0" />
+            <element signature="e#6783#7199#0" />
+            <element signature="e#7205#7787#0" />
+            <element signature="e#7793#8507#0" />
+            <element signature="e#8513#8709#0" />
+            <element signature="e#8715#9264#0" />
+            <element signature="e#9270#9480#0" />
+            <element signature="e#9564#9920#0" />
+            <element signature="e#9926#11671#0" />
+            <element signature="e#11677#12373#0" />
+            <element signature="e#12459#12821#0" />
+            <element signature="e#12827#14718#0" />
+            <element signature="e#14724#15443#0" />
+            <element signature="e#15530#16149#0" />
+            <element signature="e#16155#17767#0" />
+            <element signature="e#16886#17659#1" />
+            <element signature="e#17773#20359#0" />
+            <element signature="e#20454#20849#0" />
+            <element signature="e#20855#22816#0" />
+            <element signature="e#22822#29551#0" />
+            <element signature="e#29638#29922#0" />
+            <element signature="e#29928#31878#0" />
+            <element signature="e#31884#38001#0" />
+            <element signature="e#38751#38992#0" />
+            <element signature="e#40156#42349#0" />
           </folding>
         </state>
       </provider>
