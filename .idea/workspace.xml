@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83e7c231-3aed-4d48-94a8-afcfcd116ef5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/filesystem.dat" beforeDir="false" afterPath="$PROJECT_DIR$/filesystem.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FileSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FileSystem.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -11,7 +12,48 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="277">
+              <caret line="922" column="16" lean-forward="true" selection-start-line="922" selection-start-column="16" selection-end-line="922" selection-end-column="16" />
+              <folding>
+                <element signature="e#1368#1838#0" />
+                <element signature="e#1844#2258#0" />
+                <element signature="e#2767#3199#0" />
+                <element signature="e#3205#4001#0" />
+                <element signature="e#4007#5279#0" />
+                <element signature="e#6754#7170#0" />
+                <element signature="e#7176#7758#0" />
+                <element signature="e#7764#8478#0" />
+                <element signature="e#8484#8680#0" />
+                <element signature="e#8686#9235#0" />
+                <element signature="e#9241#9451#0" />
+                <element signature="e#9535#9891#0" />
+                <element signature="e#9897#11642#0" />
+                <element signature="e#11648#12344#0" />
+                <element signature="e#12430#12792#0" />
+                <element signature="e#12798#14689#0" />
+                <element signature="e#14695#15414#0" />
+                <element signature="e#15501#16120#0" />
+                <element signature="e#16126#17738#0" />
+                <element signature="e#17744#20330#0" />
+                <element signature="e#20425#20820#0" />
+                <element signature="e#20826#22787#0" />
+                <element signature="e#22793#29522#0" />
+                <element signature="e#29609#29893#0" />
+                <element signature="e#29899#31849#0" />
+                <element signature="e#31855#37972#0" />
+                <element signature="e#38655#38656#0" expanded="true" />
+                <element signature="e#38682#38683#0" expanded="true" />
+                <element signature="e#38722#38963#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -45,15 +87,30 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="t2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="t2" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="t2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="t2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574032196602" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574198002207" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -107,16 +164,18 @@
       <workItem from="1573764720388" duration="32341000" />
       <workItem from="1574026034722" duration="6129000" />
       <workItem from="1574195991655" duration="418000" />
+      <workItem from="1574196433929" duration="1514000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="45854000" />
+    <option name="totallyTimeSpent" value="47368000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4991119" visible="true" weight="0.28097165" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4991119" visible="true" weight="0.28582996" />
       <window_info id="Capture Tool" order="1" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -132,7 +191,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.053285968" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.8419183" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.3285968" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.3285968" />
@@ -281,19 +340,42 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/filesystem.dat">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret column="7204" lean-forward="true" selection-start-column="7204" selection-end-column="7204" />
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4897">
-          <caret line="619" column="53" lean-forward="true" selection-start-line="619" selection-start-column="53" selection-end-line="619" selection-end-column="53" />
+        <state relative-caret-position="277">
+          <caret line="922" column="16" lean-forward="true" selection-start-line="922" selection-start-column="16" selection-end-line="922" selection-end-column="16" />
           <folding>
-            <element signature="e#38606#38607#0" expanded="true" />
-            <element signature="e#38633#38634#0" expanded="true" />
+            <element signature="e#1368#1838#0" />
+            <element signature="e#1844#2258#0" />
+            <element signature="e#2767#3199#0" />
+            <element signature="e#3205#4001#0" />
+            <element signature="e#4007#5279#0" />
+            <element signature="e#6754#7170#0" />
+            <element signature="e#7176#7758#0" />
+            <element signature="e#7764#8478#0" />
+            <element signature="e#8484#8680#0" />
+            <element signature="e#8686#9235#0" />
+            <element signature="e#9241#9451#0" />
+            <element signature="e#9535#9891#0" />
+            <element signature="e#9897#11642#0" />
+            <element signature="e#11648#12344#0" />
+            <element signature="e#12430#12792#0" />
+            <element signature="e#12798#14689#0" />
+            <element signature="e#14695#15414#0" />
+            <element signature="e#15501#16120#0" />
+            <element signature="e#16126#17738#0" />
+            <element signature="e#17744#20330#0" />
+            <element signature="e#20425#20820#0" />
+            <element signature="e#20826#22787#0" />
+            <element signature="e#22793#29522#0" />
+            <element signature="e#29609#29893#0" />
+            <element signature="e#29899#31849#0" />
+            <element signature="e#31855#37972#0" />
+            <element signature="e#38655#38656#0" expanded="true" />
+            <element signature="e#38682#38683#0" expanded="true" />
+            <element signature="e#38722#38963#0" />
           </folding>
         </state>
       </provider>

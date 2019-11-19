@@ -1,9 +1,4 @@
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.DataOutputStream;
-import java.io.DataInputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -61,7 +56,7 @@ public class FileSystem {
     private static short[] readFat() {
         short[] record = new short[BLOCKS];
         try {
-            RandomAccessFile fileStore = new RandomAccessFile("../filesystem.dat", "rw");
+            RandomAccessFile fileStore = new RandomAccessFile("filesystem.dat", "rw");
             fileStore.seek(0);
             for (int i = 0; i < BLOCKS; i++) {
                 record[i] = fileStore.readShort();
@@ -154,6 +149,14 @@ public class FileSystem {
 
     //init - inicializar o sistema de arquivos com as estruturas de dados, semelhante a formatar o sistema de arquivos virtual
     private static void init() {
+        File f = new File("filesystem.dat");
+        if(f.isFile()) f.delete();
+
+        try {
+            FileWriter arq = new FileWriter("filesystem.dat");
+            arq.close();
+        }catch (Exception e){}
+
         /* inicializa a FAT com as 4 (indices 0,1,2,3) primeiras entradas 0x7ffe para a própria FAT */
         for (int i = 0; i < FAT_BLOCKS; i++) {
             fat[i] = FAT;
@@ -914,7 +917,9 @@ public class FileSystem {
 
     public static void main(String[] args) {
         //init();
-        fat = readFat();
+
+        File f = new File("filesystem.dat");
+        if(f.length()!=0) fat = readFat();
         shell();
 
         /*System.out.println("LS EM ROOT: ");
