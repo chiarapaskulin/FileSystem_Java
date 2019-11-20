@@ -394,22 +394,38 @@ public class FileSystem {
 
     //lista o diretorio descrito em path que tem seu bloco como blocoAtual
     private static void accessAndReadArchive(String path, short blocoAtual){
-        //nome do diretorio atual de blocoAtual
-        byte[] file = path.getBytes();
+        boolean found = false;
 
-        DirEntry dir_entry;
+        //nome do arquivo que eu estou procurando é pego no path[1], porque path[0] é o atual
+        String arcName = path;
 
-        for(int i = 0; i < 32; i++){
-            dir_entry = readDirEntry(blocoAtual,i);
-            //se a entrada de diretório nao esta vazia, printa seu nome
-            if (dir_entry.attributes != 0) {
-                String s = "";
-                try {
-                    s = new String(dir_entry.filename, StandardCharsets.UTF_8);
-                } catch (Exception ignored){};
-                System.out.println(s);
+        //confere cada entrada de diretório do blocoAtual
+        for (int i = 0; i < 32 && !found; i++) {
+            DirEntry entry = readDirEntry(blocoAtual, i);
+            String dirName = getDirName(entry);
+
+            //compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+            if (dirName.equals(arcName)) {
+                //se achou a entrada de diretorio, entra nela e passa path sem o diretorio atual
+                found = true;
+
+                data_block = readBlock(blocoAtual);
+
+                StringBuilder conteudo = new StringBuilder();
+
+                byte[] b = new byte[1];
+                for(int k = 0; k < data_block.length; k++){
+                    b[0] = data_block[k];
+                    try {
+                        conteudo.append(new String(b, StandardCharsets.UTF_8));
+                    } catch(Exception ignored){}
+                }
+
+                System.out.println(conteudo);
             }
         }
+
+        if (!found) System.out.println("Não há nenhum diretório chamado /" + path);
     }
 
 
