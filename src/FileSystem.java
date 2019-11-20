@@ -872,19 +872,99 @@ public class FileSystem {
 
     //------------------------METODOS DO UNLINK--------------------------------
 
-    //unlink [/caminho/arquivo] - excluir arquivo ou diretorio (o diretorio precisa estar vazio)
-    /*public static String unlink(String path){
-        if (ls(path).size() > 0) {
+    //unlink [/caminho/arquivo] - excluir arquivo ou diretorio (o diretório precisa estar vazio)
+    public static String unlink(String path){
+        ArrayList<String> dir = ls(path);
+
+        if (dir.size() > 0) {
             return "Diretório não está vazio";
         }
 
-
-        String[] arrOfStr = path.split("/");
-        for (String a : arrOfStr) {
-            System.out.println(a);
+        else {
+            String[] arrOfStr = path.split("/");
+            return followUntilFindDirToUnlink(arrOfStr, (short) 4);
         }
     }
-*/
+
+    private static String followUntilFindDirToUnlink(String[] path, short blocoAtual){
+
+        //se é o ultimo diretorio do path, acessa seu diretorio pai, acessa ele e lista ele
+        if(path.length < 2) {
+            deleteDirArc(blocoAtual);
+            return "Diretório/Arquivo removido com sucesso";
+        }
+
+        else {
+
+            //nome do diretorio que eu estou procurando é pego no path[1], porque path[0] é o atual
+            String arcName = path[1];
+
+            //confere cada entrada de diretório do blocoAtual
+            for (int i = 0; i < 32; i++){
+                DirEntry entry = readDirEntry(blocoAtual, i);
+                String dirName = getDirName(entry);
+
+                //compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+                if (dirName.equals(arcName)) {
+                    //se achou a entrada de diretorio, entra nela e passa path sem o diretorio atual
+
+
+                    String[] newPath = new String[path.length - 1];
+                    int posicao = 0;
+                    for (int k = 1; k < path.length; k++) {
+                        newPath[posicao] = path[k];
+                        posicao++;
+                    }
+
+                    //chama o metodo recursivamente com path[0], que agora é o diretorio que vamos entrar
+                    //e com entry.first_bloc, que é o numero do bloco desse diretorio
+                    return followUntilFindDirToUnlink(newPath, entry.first_block);
+                }
+            }
+
+            //printa que não achou o diretorio path[1], que é o que está sendo procurado no atual path[0]
+            return "Não encontramos o diretório/arquivo a ser excluído";
+
+        }
+    }
+
+    private static void deleteDirArc(short blocoAtual) {
+
+        // array que conterá todos blocos a serem deletados
+        ArrayList<Short> blocksToDelete = new ArrayList<>();
+
+        // funçao que adiciona no array os blocos a serem deletados
+        ArrayList<Short> toDelete = findAllBlocks(blocoAtual, blocksToDelete);
+
+        // copia da fat
+        short[] fatCopy = readFat();
+
+        // coloca cada bloco da fat como zero
+        for (Short block:toDelete) {
+            fatCopy[block] = 0;
+        }
+
+        writeFat(fatCopy);
+
+    }
+
+    private static ArrayList<Short> findAllBlocks(short blocoAtual, ArrayList<Short> blocks) {
+        short[] copyFat = readFat();
+
+        // se for fim de arquivo, volta o bloco atual
+        if (copyFat[blocoAtual] == 32767) {
+            blocks.add(blocoAtual);
+
+            return blocks;
+        }
+
+        // se não for fim de arquivo, adiciona o bloco atual e procura o próximo
+        else {
+            blocks.add(blocoAtual);
+
+            return findAllBlocks(fat[blocoAtual], blocks);
+        }
+    }
 
     //------------------------METODOS DO ISDIREMPTY--------------------------------
 
@@ -908,37 +988,10 @@ public class FileSystem {
     //------------------------MAIN--------------------------------
 
     public static void main(String[] args) {
-        //init();
 
-        //File f = new File();
         fat = readFat();
         shell();
 
-        /*System.out.println("LS EM ROOT: ");
-        ls("root");
-
-        System.out.println("\nCRIANDO UM SUBDIRETORIO EM ROOT");
-        mkdir("root/oi");
-
-        System.out.println("\nLS EM ROOT: ");
-        ls("root");
-
-        System.out.println("\nCRIANDO ARQUIVO EM ROOT");
-        String conteudo = "conteudoooooooooooarquivo_dentro_de_root";
-        createArchive("root/arquivo", conteudo, conteudo.getBytes().length);
-
-        System.out.println("\nLS EM ROOT: ");
-        ls("root");
-
-        System.out.println("\nCRIANDO ARQUIVO EM ROOT/OI");
-        conteudo = "conteudoooooooo_arquivo_dentro_de_oi";
-        createArchive("root/oi/arquivodeoi", conteudo, conteudo.getBytes().length);
-
-        System.out.println("\nLS EM ROOT: ");
-        ls("root");
-
-        System.out.println("\nLS EM ROOT/OI: ");
-        ls("root/oi");*/
     }
 
     //------------------------SHELL--------------------------------
@@ -1016,6 +1069,17 @@ public class FileSystem {
                     if(!caminho[0].equalsIgnoreCase("root")) System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
                     else{
                         writeArchive(command[1], command[2], command[2].getBytes().length);
+                    }
+                    break;
+
+                case "unlink":
+                    if (command.length == 1) {
+                        System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
+                    } else if (command[1].equals("root")) {
+                        System.out.println("Não é possível excluir a root. Para formatar, use init");
+                    }
+                    else {
+                        System.out.println(unlink(command[1]));
                     }
                     break;
 
