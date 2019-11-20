@@ -711,7 +711,7 @@ public class FileSystem {
         followUntilWriteArchive(arrOfStr,(short) 4, content, size);
     }
 
-    //vai acessando os subdiretorios até o penultimo e chama accessAndCreateArchive para criar o ultimo dentro do penultimo
+    //vai acessando os subdiretorios até o penultimo e chama accessAndWriteArchive para escrever no ultimo dentro do penultimo
     private static void followUntilWriteArchive(String[] path, short blocoAtual, String content, int size) {
         //se [0] é o ultimo diretorio do path e [1] é o arquivo que tem que ser modificado, acessa ele e modifica o arquivo
         if(path.length <= 2) {
@@ -750,7 +750,7 @@ public class FileSystem {
         }
     }
 
-    //cria o diretorio descrito em path[1] dentro de path[0]
+    //edita path[1] dentro de path[0]
     private static void accessAndWriteArchive(String[] path, short blocoAtual, String content, int size) {
         boolean found = false;
 
@@ -879,11 +879,92 @@ public class FileSystem {
     //------------------------METODOS DO APPEND--------------------------------
 
     //append "string" [/caminho/arquivo] - anexar dados em um arquivo
-    public static void append(String path){
+    public static void append(String path, String content, int size){
         String[] arrOfStr = path.split("/");
-        for (String a : arrOfStr) {
-            System.out.println(a);
+        followUntilAppend(arrOfStr,(short) 4, content, size);
+    }
+
+    //vai acessando os subdiretorios até o penultimo e chama accessAndAppend para appendar o conteudo no ultimo dentro do penultimo
+    private static void followUntilAppend(String[] path, short blocoAtual, String content, int size) {
+        //se [0] é o ultimo diretorio do path e [1] é o arquivo que tem que ser modificado, acessa ele e modifica o arquivo
+        if(path.length <= 2) {
+            accessAndAppend(path, blocoAtual, content, size);
+        } else {
+            boolean found = false;
+
+            //nome do diretorio que eu estou procurando é pego no path[1], porque path[0] é o atual
+            String arcName = path[1];
+
+            //confere cada entrada de diretório do blocoAtual
+            for (int i = 0; i < 32 && !found; i++) {
+                DirEntry entry = readDirEntry(blocoAtual, i);
+                String dirName = getDirName(entry);
+
+                //compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+                if(dirName.equals(arcName)) {
+                    //se achou a entrada de diretorio, entra nela e passa path sem o diretorio atual
+                    found = true;
+
+                    String[] newPath = new String[path.length - 1];
+                    int posicao = 0;
+                    for (int k = 1; k < path.length; k++) {
+                        newPath[posicao] = path[k];
+                        posicao++;
+                    }
+
+                    //chama o metodo recursivamente com path[0], que agora é o diretorio que vamos entrar
+                    //e com entry.first_block, que é o numero do bloco desse diretorio
+                    followUntilAppend(newPath, entry.first_block, content, size);
+                }
+            }
+
+            //printa que não achou o diretorio path[1], que é o que está sendo procurado no atual path[0]
+            if (!found) System.out.println("Não há nenhum diretório chamado /" + path[1]);
         }
+    }
+
+    //appenda o conteudo em path[1] dentro de path[0]
+    private static void accessAndAppend(String[] path, short blocoAtual, String content, int size) {
+        boolean found = false;
+
+        //nome do arquivo que eu estou procurando é pego no path[1], porque path[0] é o atual
+        String arcName = path[1];
+
+        //confere cada entrada de diretório do blocoAtual
+        for (int i = 0; i < 32 && !found; i++) {
+            DirEntry entry = readDirEntry(blocoAtual, i);
+            String dirName = getDirName(entry);
+
+            //compara o nome da entrada de diretorio atual com o nome do diretorio que eu estou procurando
+            if (dirName.equals(arcName)) {
+                //se achou a entrada de diretorio, entra nela e passa path sem o diretorio atual
+                found = true;
+
+                byte[] oldContent = readBlock(entry.first_block);
+
+                //cria um bloco com o conteúdo que foi passado por parâmetro
+                byte[] contentBytes = content.getBytes();
+
+                byte[] newContent = new byte[contentBytes.length+oldContent.length];
+
+                int oldc = 0;
+                int newc = 0;
+                for(int j=0; j<newContent.length; j++){
+                    if(oldc<=oldContent.length){
+                        newContent[j] = oldContent[oldc];
+                        oldc++;
+                    }else{
+                        newContent[j] = contentBytes[newc];
+                        newc++;
+                    }
+                }
+                System.arraycopy(contentBytes, 0, data_block, 0, contentBytes.length);
+                //escreve o bloco criado com o conteúdo no arquivo .dat
+                writeBlock(entry.first_block, data_block);
+            }
+        }
+
+        if (!found) System.out.println("Não há nenhum diretório chamado /" + path[1]);
     }
 
 
@@ -950,12 +1031,24 @@ public class FileSystem {
                     if (command.length < 2 ) {
                         System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
                     }else {
-                        createArchive(command[1], command[2], command[2].getBytes().length);
+                        String conteudo = "";
+                        for(int i=2; i<command.length; i++){
+                            conteudo+=command[i] + " ";
+                        }
+                        createArchive(command[1], conteudo, conteudo.getBytes().length);
                     }
                     break;
 
                 case "write":
-                    writeArchive(command[1], command[2], command[2].getBytes().length);
+                    if (command.length < 2 ) {
+                        System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
+                    }else {
+                        String conteudo = "";
+                        for(int i=2; i<command.length; i++){
+                            conteudo+=command[i] + " ";
+                        }
+                        writeArchive(command[1], conteudo, conteudo.getBytes().length);
+                    }
                     break;
 
                 case "unlink":
@@ -969,6 +1062,17 @@ public class FileSystem {
                     }
                     break;
 
+                case "append":
+                    if (command.length < 2 ) {
+                        System.out.println("Por favor, insira o caminho específico para executar o comando adequadamente");
+                    }else {
+                        String conteudo = "";
+                        for(int i=2; i<command.length; i++){
+                            conteudo+=command[i] + " ";
+                        }
+                        append(command[1], conteudo, conteudo.getBytes().length);
+                    }
+                    break;
                 default:
                     System.out.println("Opção inválida");
             }
