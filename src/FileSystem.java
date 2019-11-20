@@ -321,8 +321,6 @@ public class FileSystem {
 
     //lista o diretorio descrito em path que tem seu bloco como blocoAtual
     private static ArrayList<String> accessAndListDir(short blocoAtual) {
-
-
         DirEntry dir_entry;
 
         //adiciona cada entrada para um array de strings
@@ -970,14 +968,6 @@ public class FileSystem {
             return findAllBlocks(fat[blocoAtual], blocks);
         }
     }
-
-    //------------------------METODOS DO ISDIREMPTY--------------------------------
-
-    //retorna se o Diretorio esta vazio
-    public static boolean isDirEmpty(String path){
-        return true;
-    }
-
 
     //------------------------METODOS DO APPEND--------------------------------
 
