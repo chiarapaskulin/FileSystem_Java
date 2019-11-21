@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="83e7c231-3aed-4d48-94a8-afcfcd116ef5" name="Default Changelist" comment="" />
+    <list default="true" id="83e7c231-3aed-4d48-94a8-afcfcd116ef5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/T2___SISOP - Chiara, Otavio, Marcio, Octavio.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/filesystem.dat" beforeDir="false" afterPath="$PROJECT_DIR$/filesystem.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FileSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FileSystem.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,40 +17,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="182" column="29" lean-forward="true" selection-start-line="182" selection-start-column="29" selection-end-line="182" selection-end-column="29" />
-              <folding>
-                <element signature="e#1185#1655#0" />
-                <element signature="e#1661#2075#0" />
-                <element signature="e#2081#2575#0" />
-                <element signature="e#2581#3013#0" />
-                <element signature="e#3019#3815#0" />
-                <element signature="e#3821#5093#0" />
-                <element signature="e#5178#6698#0" />
-                <element signature="e#6783#7199#0" />
-                <element signature="e#7205#7787#0" />
-                <element signature="e#7793#8507#0" />
-                <element signature="e#8513#8709#0" />
-                <element signature="e#8715#9264#0" />
-                <element signature="e#9270#9480#0" />
-                <element signature="e#9564#9920#0" />
-                <element signature="e#9926#11671#0" />
-                <element signature="e#11677#12373#0" />
-                <element signature="e#12459#12821#0" />
-                <element signature="e#12827#14718#0" />
-                <element signature="e#14724#15443#0" />
-                <element signature="e#15530#16149#0" />
-                <element signature="e#16155#17767#0" />
-                <element signature="e#16886#17659#1" />
-                <element signature="e#17773#20359#0" />
-                <element signature="e#20454#20849#0" />
-                <element signature="e#20855#22816#0" />
-                <element signature="e#22822#29551#0" />
-                <element signature="e#29638#29922#0" />
-                <element signature="e#29928#31878#0" />
-                <element signature="e#31884#38001#0" />
-                <element signature="e#38751#38992#0" />
-              </folding>
+            <state relative-caret-position="306">
+              <caret line="43" column="61" lean-forward="true" selection-start-line="43" selection-start-column="61" selection-end-line="43" selection-end-column="61" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/filesystem.dat">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="2097152" selection-start-column="2097152" selection-end-column="2097152" />
             </state>
           </provider>
         </entry>
@@ -87,11 +68,30 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="t2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="t2" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="t2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="t2" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="t2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="t2" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="production" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="t2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="t2" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="production" type="462c0819:PsiDirectoryNode" />
               <item name="t2" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -103,7 +103,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -169,12 +168,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="51841000" />
+    <option name="totallyTimeSpent" value="52052000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4991119" visible="true" weight="0.29068825" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4991119" visible="true" weight="0.18623482" />
       <window_info id="Capture Tool" order="1" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -190,7 +190,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3143872" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.11722913" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.3285968" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.3285968" />
@@ -355,40 +355,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/FileSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="182" column="29" lean-forward="true" selection-start-line="182" selection-start-column="29" selection-end-line="182" selection-end-column="29" />
-          <folding>
-            <element signature="e#1185#1655#0" />
-            <element signature="e#1661#2075#0" />
-            <element signature="e#2081#2575#0" />
-            <element signature="e#2581#3013#0" />
-            <element signature="e#3019#3815#0" />
-            <element signature="e#3821#5093#0" />
-            <element signature="e#5178#6698#0" />
-            <element signature="e#6783#7199#0" />
-            <element signature="e#7205#7787#0" />
-            <element signature="e#7793#8507#0" />
-            <element signature="e#8513#8709#0" />
-            <element signature="e#8715#9264#0" />
-            <element signature="e#9270#9480#0" />
-            <element signature="e#9564#9920#0" />
-            <element signature="e#9926#11671#0" />
-            <element signature="e#11677#12373#0" />
-            <element signature="e#12459#12821#0" />
-            <element signature="e#12827#14718#0" />
-            <element signature="e#14724#15443#0" />
-            <element signature="e#15530#16149#0" />
-            <element signature="e#16155#17767#0" />
-            <element signature="e#16886#17659#1" />
-            <element signature="e#17773#20359#0" />
-            <element signature="e#20454#20849#0" />
-            <element signature="e#20855#22816#0" />
-            <element signature="e#22822#29551#0" />
-            <element signature="e#29638#29922#0" />
-            <element signature="e#29928#31878#0" />
-            <element signature="e#31884#38001#0" />
-            <element signature="e#38751#38992#0" />
-          </folding>
+        <state relative-caret-position="306">
+          <caret line="43" column="61" lean-forward="true" selection-start-line="43" selection-start-column="61" selection-end-line="43" selection-end-column="61" />
         </state>
       </provider>
     </entry>
