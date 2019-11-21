@@ -982,10 +982,8 @@ public class FileSystem {
     //------------------------MAIN--------------------------------
 
     public static void main(String[] args) {
-
         fat = readFat();
         shell();
-
     }
 
     //------------------------SHELL--------------------------------
