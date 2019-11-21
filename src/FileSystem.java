@@ -966,7 +966,7 @@ public class FileSystem {
                 int oldc = 0;
                 int newc = 0;
                 for(int j=0; j<newContent.length; j++){
-                    if(oldc<=oldContent.length){
+                    if(oldc<oldContent.length){
                         newContent[j] = oldContent[oldc];
                         oldc++;
                     }else{
